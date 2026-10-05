@@ -4,12 +4,7 @@
  */
 package com.mycompany.cbl_sheetmusicplayer;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
-import java.awt.FlowLayout;
 import javax.sound.midi.*;
-import javax.sound.sampled.*;
-import java.awt.Toolkit;
 
 /**
  *
