@@ -12,25 +12,15 @@ import javax.sound.midi.*;
  */
 public class Note {
 
-    public static void playViolinA442(int durationMs) {
-        try {
-            Synthesizer synth = MidiSystem.getSynthesizer();
-            synth.open();
-
-            MidiChannel channel = synth.getChannels()[0];
-            channel.programChange(40); // 40 = Violin
-            channel.setPitchBend(8514); // Shift from 440 Hz to 442 Hz
-
-            channel.noteOn(69, 100); // 69 = A4, velocity 100
-
-            Thread.sleep(durationMs);
-
-            channel.noteOff(69);
-            synth.close();
-        } catch (Exception ignored) {}
-    }
-
-    public static void main(String[] args) {
-        playViolinA442(2000);
+    private double duration;        //
+    private int pitch;          //the note character basically 
+    private boolean isRest;     
+    private boolean isUpper;  //going to be used to define the line extending the note
+    private int volume;       //the loudness of the note
+    
+    public Note (double duration, int pitch) {
+        this.duration = duration;
+        this.pitch = pitch;
+        
     }
 }
