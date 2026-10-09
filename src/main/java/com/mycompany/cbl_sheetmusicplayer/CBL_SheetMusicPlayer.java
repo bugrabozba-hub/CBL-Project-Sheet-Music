@@ -11,6 +11,10 @@ package com.mycompany.cbl_sheetmusicplayer;
 public class CBL_SheetMusicPlayer {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Bar test = new Bar();
+        
+        test.addNote(, 0, 0);
+        
+        test.play();
     }
 }
