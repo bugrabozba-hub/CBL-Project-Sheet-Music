@@ -20,9 +20,8 @@ public class Audio {
 
             MidiChannel channel = synth.getChannels()[0];
             channel.programChange(40); // 40 = Violin
-            channel.setPitchBend(8514); // Shift from 440 Hz to 442 Hz
-
-            channel.noteOn(69, 100); // 69 = A4, velocity 100
+            
+            channel.noteOn(80, 100); // 69 = A4, velocity 100
 
             Thread.sleep(durationMs);
 
