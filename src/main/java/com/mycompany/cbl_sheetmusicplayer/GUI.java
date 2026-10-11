@@ -24,22 +24,7 @@ public class GUI {
             frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);   
             
             frame.setLayout(new FlowLayout());//close the application when window is closed
-
-            JLabel label1 = new JLabel("Enter a name");          //text only
-            JLabel label2 = new JLabel(new ImageIcon("bulb.png")); 
             
-            frame.setVisible(true);//icon only
-
-            frame.add(label1);
-            frame.add(label2);
-            
-            JLabel label3 = new JLabel("Enter a name");
-            JTextField txtname = new JTextField("Enter your name here");
-            JPasswordField txtPassword = new JPasswordField(" ");
-
-            frame.add(txtname);
-            frame.add(txtPassword);
-
             frame.setVisible(true);
 
     }
