@@ -38,6 +38,8 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         
         setBackground(Color.WHITE);
         
+        setPreferredSize(new Dimension(570,640));
+        
     } 
     
     
