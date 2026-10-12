@@ -54,25 +54,27 @@ public abstract class Note {
     //public abstract void draw();
     
     public void play() {
-        try { //Added this because Netbeans couldn't stop crying
-            Synthesizer synth = MidiSystem.getSynthesizer();
-            synth.open();
+        try {
+        Synthesizer synth = MidiSystem.getSynthesizer();
+        synth.open();
 
-            MidiChannel channel = synth.getChannels()[0];
-            channel.programChange( Sheet.getInstrument() ); // 40 = Violin
-            
-            channel.noteOn(this.pitch, this.volume); // 69 = A4, velocity 100
+        MidiChannel channel = synth.getChannels()[0];
+        channel.programChange(Sheet.getInstrument()); // 40 = Violin
         
-            int time = (60000/Sheet.getBpm()) * this.duration;
-            
-            Thread.sleep(time);
-        } catch (InterruptedException ex) {
-            System.getLogger(Note.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        // Start note
+        channel.noteOn(this.pitch, this.volume);
+        
+        // Calculate duration in ms
+        int time = (60000 / Sheet.getBpm()) * this.duration;
+        Thread.sleep(time);
 
-        channel.noteOff(69);
+        // Turn OFF the actual note that was played
+        channel.noteOff(this.pitch);
         synth.close();
-    }
+        
+    } catch (InterruptedException | MidiUnavailableException ex) {
+        System.getLogger(Note.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+    }    }
     
     
     public int getDuration() {

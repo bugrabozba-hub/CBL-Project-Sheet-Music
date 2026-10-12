@@ -8,17 +8,12 @@ package com.mycompany.cbl_sheetmusicplayer;
  *
  * @author bugra
  */
-public class GUIJFrame extends javax.swing.JPanel {
+public class GUIJFrame extends javax.swing.JFrame {
     
-    public enum noteKind {
-        minim;
-        quaver;
-        semiQuaver;
-        semiBreve;
-        crochet;
+    public static void main (String[] args) {
+        
     }
     
-    private noteKind selectedNote = noteKind.crochet;
     private boolean isRest = false;
 
     /**
@@ -28,8 +23,16 @@ public class GUIJFrame extends javax.swing.JPanel {
         initComponents();
         crochetButton.setSelected(true);
         //crochet is selected as default
+        naturalButton.setSelected(true);
+        //natural is selected as default
+        mezzoForteButton.setSelected(true);
+        //mf is selected as default
+        SheetMusicCanvas canvas = new SheetMusicCanvas();
+        
+        setSize(570,640);
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,7 +45,7 @@ public class GUIJFrame extends javax.swing.JPanel {
         noteSelectionButtons = new javax.swing.ButtonGroup();
         volumeSelectionButtons = new javax.swing.ButtonGroup();
         semiToneSelectionButtons = new javax.swing.ButtonGroup();
-        SheetDisplay = new NoteSelectorPanel();
+        SheetMusicCanvas = new SheetMusicCanvas();
         Title = new javax.swing.JTextField();
         NoteSelectionPanel = new javax.swing.JPanel();
         semiBreveButton = new javax.swing.JToggleButton();
@@ -71,10 +74,14 @@ public class GUIJFrame extends javax.swing.JPanel {
         forteButton = new javax.swing.JToggleButton();
         fortissimoButton = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
+        resetButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
 
-        SheetDisplay.setBackground(new java.awt.Color(255, 255, 255));
-        SheetDisplay.setForeground(new java.awt.Color(0, 0, 0));
-        SheetDisplay.setLayout(new java.awt.BorderLayout());
+        SheetMusicCanvas.setBackground(new java.awt.Color(255, 255, 255));
+        SheetMusicCanvas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        SheetMusicCanvas.setForeground(new java.awt.Color(0, 0, 0));
+        SheetMusicCanvas.setMaximumSize(new java.awt.Dimension(640, 556));
+        SheetMusicCanvas.setLayout(new java.awt.BorderLayout());
 
         Title.setBackground(new java.awt.Color(255, 255, 255));
         Title.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -82,7 +89,7 @@ public class GUIJFrame extends javax.swing.JPanel {
         Title.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         Title.setText("Title");
         Title.addActionListener(this::TitleActionPerformed);
-        SheetDisplay.add(Title, java.awt.BorderLayout.PAGE_START);
+        SheetMusicCanvas.add(Title, java.awt.BorderLayout.PAGE_START);
 
         NoteSelectionPanel.setBackground(new java.awt.Color(51, 51, 51));
         NoteSelectionPanel.setForeground(new java.awt.Color(255, 255, 255));
@@ -91,7 +98,7 @@ public class GUIJFrame extends javax.swing.JPanel {
         semiBreveButton.setBackground(new java.awt.Color(255, 255, 255));
         noteSelectionButtons.add(semiBreveButton);
         semiBreveButton.setForeground(new java.awt.Color(0, 0, 0));
-        semiBreveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/semibrevex8.png"))); // NOI18N
+        semiBreveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/semibrevex8x8.png"))); // NOI18N
         semiBreveButton.addActionListener(this::semiBreveButtonActionPerformed);
         NoteSelectionPanel.add(semiBreveButton);
 
@@ -216,12 +223,14 @@ public class GUIJFrame extends javax.swing.JPanel {
         volumeSelectionButtons.add(pianoButton);
         pianoButton.setForeground(new java.awt.Color(0, 0, 0));
         pianoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/pianox9.png"))); // NOI18N
+        pianoButton.addActionListener(this::pianoButtonActionPerformed);
         volumeSelector.add(pianoButton);
 
         mezzoPianoButton.setBackground(new java.awt.Color(255, 255, 255));
         volumeSelectionButtons.add(mezzoPianoButton);
         mezzoPianoButton.setForeground(new java.awt.Color(0, 0, 0));
         mezzoPianoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/mezzopianox20.png"))); // NOI18N
+        mezzoPianoButton.addActionListener(this::mezzoPianoButtonActionPerformed);
         volumeSelector.add(mezzoPianoButton);
 
         mezzoForteButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -235,45 +244,65 @@ public class GUIJFrame extends javax.swing.JPanel {
         volumeSelectionButtons.add(forteButton);
         forteButton.setForeground(new java.awt.Color(0, 0, 0));
         forteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/fortex16.png"))); // NOI18N
+        forteButton.addActionListener(this::forteButtonActionPerformed);
         volumeSelector.add(forteButton);
 
         fortissimoButton.setBackground(new java.awt.Color(255, 255, 255));
         volumeSelectionButtons.add(fortissimoButton);
         fortissimoButton.setForeground(new java.awt.Color(0, 0, 0));
         fortissimoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/fortissimox16.png"))); // NOI18N
+        fortissimoButton.addActionListener(this::fortissimoButtonActionPerformed);
         volumeSelector.add(fortissimoButton);
+
+        resetButton.setBackground(new java.awt.Color(255, 255, 255));
+        resetButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        resetButton.setForeground(new java.awt.Color(0, 0, 0));
+        resetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/reset-iconx20.png"))); // NOI18N
+        resetButton.setText("  Reset");
+
+        deleteButton.setBackground(new java.awt.Color(255, 255, 255));
+        deleteButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(0, 0, 0));
+        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/deletex20.png"))); // NOI18N
+        deleteButton.setText("  Delete");
+        deleteButton.addActionListener(this::deleteButtonActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 332, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(resetButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deleteButton)
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(resetButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Buttons, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(SheetDisplay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(NoteSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(volumeSelector, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(noteSemiSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 9, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(NoteSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(volumeSelector, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(noteSemiSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(SheetMusicCanvas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,112 +315,123 @@ public class GUIJFrame extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(volumeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(SheetDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+                .addComponent(SheetMusicCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Buttons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(2, 2, 2))
+                .addGap(8, 8, 8))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void quaverRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quaverRestButtonActionPerformed
-        selectedNote = noteKind.quaver;
+        int type = 1;
         isRest = true;
     }//GEN-LAST:event_quaverRestButtonActionPerformed
 
     private void semiBreveRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiBreveRestButtonActionPerformed
-        selectedNote = noteKind.semiBreve;
+        int type = 4;
         isRest = true;
     }//GEN-LAST:event_semiBreveRestButtonActionPerformed
 
     private void minimRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimRestButtonActionPerformed
-        selectedNote = noteKind.minim;
+        int type = 3;
         isRest = true;
     }//GEN-LAST:event_minimRestButtonActionPerformed
 
     private void semiBreveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiBreveButtonActionPerformed
-        selectedNote = noteKind.semiBreve;
+        int type = 4;
         isRest = false;
     }//GEN-LAST:event_semiBreveButtonActionPerformed
 
     private void TitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TitleActionPerformed
-        //to do
+        String Title;
     }//GEN-LAST:event_TitleActionPerformed
 
     private void semiQuaverRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiQuaverRestButtonActionPerformed
-        selectedNote = noteKind.semiQuaver;
+        int type = 0;
         isRest = true;
     }//GEN-LAST:event_semiQuaverRestButtonActionPerformed
 
     private void minimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimButtonActionPerformed
-        selectedNote = noteKind.minim;
+        int type = 3;
         isRest = false;
     }//GEN-LAST:event_minimButtonActionPerformed
 
     private void crochetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crochetButtonActionPerformed
-        selectedNote = noteKind.crochet;
+        int type = 2;
         isRest = false;
     }//GEN-LAST:event_crochetButtonActionPerformed
 
     private void quaverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quaverButtonActionPerformed
-        selectedNote = noteKind.quaver;
+        int type = 1;
         isRest = false;
     }//GEN-LAST:event_quaverButtonActionPerformed
 
     private void semiQuaverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiQuaverButtonActionPerformed
-        selectedNote = noteKind.semiQuaver;
+        int type = 0;
         isRest = false;
     }//GEN-LAST:event_semiQuaverButtonActionPerformed
 
     private void crochetRestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crochetRestActionPerformed
-        selectedNote = noteKind.crochet;
+        int type = 2;
         isRest = true;
     }//GEN-LAST:event_crochetRestActionPerformed
 
     private void mezzoForteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoForteButtonActionPerformed
-        // TODO add your handling code here:
+        int volume = Sheet.defaultVolume;
     }//GEN-LAST:event_mezzoForteButtonActionPerformed
 
     private void sharpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sharpButtonActionPerformed
-        // TODO add your handling code here:
+        int pitch = Sheet.defaultPitch + 1;
     }//GEN-LAST:event_sharpButtonActionPerformed
 
     private void naturalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_naturalButtonActionPerformed
-        // TODO add your handling code here:
+        int pitch = Sheet.defaultPitch;
     }//GEN-LAST:event_naturalButtonActionPerformed
 
     private void flatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flatButtonActionPerformed
-        // TODO add your handling code here:
+        int pitch = Sheet.defaultPitch - 1;
     }//GEN-LAST:event_flatButtonActionPerformed
 
     private void pianissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianissimoButtonActionPerformed
-        // TODO add your handling code here:
+        int volume = Sheet.defaultVolume * (3 / 5);
     }//GEN-LAST:event_pianissimoButtonActionPerformed
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PlayButtonActionPerformed
 
-    public Note createSelectedNote(int pitch) {
-        switch (selectedNote) {
-            case semiBreve:
-                return new Semibreve(pitch, volume, isRest);
-            case semiQuaver:
-                return new SemiQuaver(pitch);
-                //cannot add these beacuse ferranito didnt declare boolean isRest but each class is for the note itself, discuss.
-        }
-}
+    private void mezzoPianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoPianoButtonActionPerformed
+        int volume = Sheet.defaultVolume * (4 / 5);
+    }//GEN-LAST:event_mezzoPianoButtonActionPerformed
+
+    private void pianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoButtonActionPerformed
+        int volume = Sheet.defaultVolume * (3 / 5);
+    }//GEN-LAST:event_pianoButtonActionPerformed
+
+    private void forteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forteButtonActionPerformed
+        int volume = Sheet.defaultVolume * (6 / 5);
+    }//GEN-LAST:event_forteButtonActionPerformed
+
+    private void fortissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fortissimoButtonActionPerformed
+        int volume = Sheet.defaultVolume * (7 / 5);
+    }//GEN-LAST:event_fortissimoButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Buttons;
     private javax.swing.JPanel NoteSelectionPanel;
     private javax.swing.JToggleButton PlayButton;
     private javax.swing.JButton PreviousButton;
-    private javax.swing.JPanel SheetDisplay;
+    private javax.swing.JPanel SheetMusicCanvas;
     private javax.swing.JTextField Title;
     private javax.swing.JToggleButton crochetButton;
     private javax.swing.JToggleButton crochetRest;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JToggleButton flatButton;
     private javax.swing.JToggleButton forteButton;
     private javax.swing.JToggleButton fortissimoButton;
@@ -408,6 +448,7 @@ public class GUIJFrame extends javax.swing.JPanel {
     private javax.swing.JToggleButton pianoButton;
     private javax.swing.JToggleButton quaverButton;
     private javax.swing.JToggleButton quaverRestButton;
+    private javax.swing.JButton resetButton;
     private javax.swing.JToggleButton semiBreveButton;
     private javax.swing.JToggleButton semiBreveRestButton;
     private javax.swing.JToggleButton semiQuaverButton;
