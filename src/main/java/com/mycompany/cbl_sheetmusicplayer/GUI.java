@@ -17,7 +17,7 @@ public class GUI {
         public static void main(String[] args) {
             JFrame frame = new JFrame("Sheet Music Player");         //create JFrame with the title
         
-            frame.setSize(1120, 1280);                                    //Set window size (sidth, height)
+            frame.setSize(730, 750);                                    //Set window size (sidth, height)
 
             frame.setLocationRelativeTo(null);                          //Center the window on the screen
 
