@@ -21,7 +21,7 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     private int hoverY = -1;
     
     //drawing the sheetmusic
-    private final int topStaffY = 160;
+    private final int topStaffY = 100;
     private final int lineSpacing = 16;
     private final int stepDistance = lineSpacing / 2;
     
@@ -74,32 +74,40 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         repaint();    
     }
     
-    //pasted the draw method for now!!
+    //pasted the draw method for now TO DO
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
+        Graphics2D lineDrawer = (Graphics2D) g.create();
 
-        // Enable smooth lines
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // Enable smooth lines / just in case :)
+        //lineDrawer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // 1. Draw the 5 main staff lines
-        g2.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(1.5f));
+        lineDrawer.setColor(Color.BLACK);
+        lineDrawer.setStroke(new BasicStroke(1.5f));
 
         int startX = 40;                // Left margin
         int endX = getWidth() - 40;     // Right margin
-
-        for (int i = 0; i < 5; i++) {
-            int currentY = topStaffY + (i * lineSpacing);
-            g2.drawLine(startX, currentY, endX, currentY);
+        
+        //draws "sheetLineCount" times sheets.
+        int sheetLineCount = 3;
+        
+        for (int j = 0; j < sheetLineCount; j++) {
+            for (int i = 0; i < 5; i++) {
+                int currentY = topStaffY + (i * lineSpacing) + (j * 144);
+                lineDrawer.drawLine(startX, currentY, endX, currentY);
+            }
+            lineDrawer.drawLine(startX, 100 + (j * 144), startX, 164 + (j * 144));   //draw the first bar line
+            lineDrawer.drawLine(endX, 100 + (j * 144), endX, 164 + (j * 144));   //draw the last bar line
         }
-
+        
+        
         // 2. Draw hover preview note if mouse is inside the panel
         if (hoverX != -1 && hoverY != -1) {
-            g2.setColor(new Color(0, 102, 204, 160)); // Translucent blue
-            g2.fillOval(hoverX - 7, hoverY - 5, 14, 10);
+            lineDrawer.setColor(new Color(0, 102, 204, 160)); //blue
+            lineDrawer.fillOval(hoverX - 7, hoverY - 5, 14, 10);
         }
 
-        g2.dispose();
+        lineDrawer.dispose();
     }
 }
