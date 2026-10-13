@@ -8,13 +8,10 @@ package com.mycompany.cbl_sheetmusicplayer;
  *
  * @author freijosune
  */
-public class Minim extends Note {
+public class NoteTooLongException extends Error {
     
-    public Minim (int pitch, int volume) {
-        super(Sheet.beatSections * 2, pitch, volume); // One beat can be divided into maximum of 12 parts
+    public NoteTooLongException(String message) {
+        super(message);
     }
     
-    public Minim (int pitch) {
-        this(pitch, Sheet.defaultVolume);
-    }
 }
