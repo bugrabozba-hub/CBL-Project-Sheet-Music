@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.cbl_sheetmusicplayer;
+import java.util.ArrayList; 
+import javax.sound.midi.*;
 
 /**
  *
@@ -14,9 +16,15 @@ public class Sheet {
     private static int bpm = 100;
     private static int[] TimeSignature = {4, 4};
     private static boolean stop;
+    private static ArrayList<Bar> Bars = new ArrayList<>();
+    private static int lastBar;
+    
     protected final static int beatSections = 4; // For now, any multiple of 4.
     protected final static int defaultVolume = 100;
-    protected final static int defaultPitch = 69; // A4
+    protected final static int defaultPitch = 69; // 69 = A4
+    
+    protected static Synthesizer synth;
+    protected static MidiChannel channel;
     
     //test 
     
@@ -63,5 +71,29 @@ public class Sheet {
     
     public static int getTimeSignature() {
         return getTimeSignature(0);
+    }
+    
+    
+    public static void play() throws MidiUnavailableException, InterruptedException {
+        synth = MidiSystem.getSynthesizer();
+        synth.open();
+        channel = synth.getChannels()[0];
+        
+        for (int i = lastBar; i < Bars.size(); i++) {
+            Bars.get(i).play();
+            
+            if (stop) {
+                lastBar = i;
+            }
+        }
+        
+        lastBar = 0;
+        
+    }
+    
+    public static void ClearAll() {
+        for (Bar i: Bars) {
+            i.clear();
+        }
     }
 }

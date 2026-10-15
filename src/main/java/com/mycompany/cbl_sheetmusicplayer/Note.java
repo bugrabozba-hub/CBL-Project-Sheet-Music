@@ -10,7 +10,7 @@ import javax.sound.midi.*;
  *
  * @author bugra
  */
-public abstract class Note {
+public class Note {
     
     // 55 - 92 (both including)
 
@@ -53,28 +53,18 @@ public abstract class Note {
     
     //public abstract void draw();
     
-    public void play() {
-        try {
-        Synthesizer synth = MidiSystem.getSynthesizer();
-        synth.open();
+    public void play() throws InterruptedException {
+        Sheet.channel.programChange(Sheet.getInstrument()); // 40 Violin
+        Sheet.channel.noteOn(this.pitch, this.volume);
 
-        MidiChannel channel = synth.getChannels()[0];
-        channel.programChange(Sheet.getInstrument()); // 40 = Violin
-        
-        // Start note
-        channel.noteOn(this.pitch, this.volume);
-        
-        // Calculate duration in ms
-        int time = (60000 / Sheet.getBpm()) * this.duration;
+        int time = (6000 / Sheet.getBpm()) * this.duration;
+
         Thread.sleep(time);
 
-        // Turn OFF the actual note that was played
-        channel.noteOff(this.pitch);
-        synth.close();
-        
-    } catch (InterruptedException | MidiUnavailableException ex) {
-        System.getLogger(Note.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-    }    }
+        Sheet.channel.noteOff(this.pitch);
+
+    }
+
     
     
     public int getDuration() {
@@ -91,5 +81,9 @@ public abstract class Note {
     
     public int getPitch() {
         return this.pitch;
+    }
+    
+    public int getVolume() {
+        return this.volume;
     }
 }

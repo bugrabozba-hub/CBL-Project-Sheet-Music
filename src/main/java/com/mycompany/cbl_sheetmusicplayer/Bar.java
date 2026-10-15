@@ -4,6 +4,7 @@
  */
 package com.mycompany.cbl_sheetmusicplayer;
 import java.util.ArrayList; 
+import javax.sound.midi.*;
 
 /**
  *
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class Bar {
     
     private int beats;
+    private int lastNote = 0;
     
     public Bar(int beats) {
         this.beats = beats;
@@ -71,13 +73,13 @@ public class Bar {
         // Number of semiq. = (portions of beat left) / (length of a semiq.)
         int semidiff = (diff % Sheet.beatSections) / (Sheet.beatSections / 4);
         for (int i = 0; i < semidiff; i++){
-            Notes.add(new SemiQuaver(Sheet.defaultPitch, 0));
+            Notes.add(new Note(0, Sheet.defaultPitch, 0));
         }
         
         // Fill necesary Crochet rests
         diff = diff / Sheet.beatSections;
         for (int i = 0; i < diff; i++){
-            Notes.add(new Crochet(Sheet.defaultPitch, 0));
+            Notes.add(new Note(2, Sheet.defaultPitch, 0));
         }
     }
     
@@ -86,7 +88,7 @@ public class Bar {
      * @param LastNote Note from which the playing should start
      * @return Next note to be played when playing again.
      */
-    int play(int LastNote) {
+    int play(int LastNote) throws InterruptedException {
         
         this.fill();
         
@@ -100,8 +102,17 @@ public class Bar {
         return 0;   
     }
     
-    int play() {
-        return play(0);
+    void play() throws InterruptedException {
+        
+        for (int i = lastNote; i < Notes.size(); i++) {
+            Notes.get(i).play();
+            
+            if (Sheet.getStop()) {
+                lastNote = i;
+            }
+        }
+        
+        lastNote = 0;        
     }
     
     void deleteNote(int place) {
@@ -126,16 +137,25 @@ public class Bar {
         return Notes.size();
     }
     
-    public void addNote(int type, int pitch, int volume) {
-        Note AddedNote = null;
+    public void addNote (int type, int pitch, int volume)
+            throws NoteTooLongException, InvalidNoteTypeException {
         
-        switch (type) {
-            case 0 -> AddedNote = new SemiQuaver(pitch, volume);
-            case 1 -> AddedNote = new Quaver(pitch, volume);
-            case 2 -> AddedNote = new Crochet(pitch, volume);
-            case 3 -> AddedNote = new Minim(pitch, volume);
-            case 4 -> AddedNote = new Semibreve(pitch, volume);
+        if (type < 0 | type > 4) {
+            throw new InvalidNoteTypeException("Note type should be between 0 and 4");
         }
+        
+        int addLength = 1;
+        
+        // calculates added lenght through power of two.
+        for (int i = 0; i < type; i++) {
+            addLength *= 2;
+        }
+        
+        if (this.getLength() + addLength > this.beats * Sheet.beatSections) {
+            throw new NoteTooLongException("Note makes bar exceeds" + this.beats + " beats.");
+        }
+        
+        Note AddedNote = new Note(addLength, pitch, volume);
         
         Notes.add(AddedNote);
     }

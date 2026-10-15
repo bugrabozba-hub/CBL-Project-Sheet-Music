@@ -8,14 +8,10 @@ package com.mycompany.cbl_sheetmusicplayer;
  *
  * @author freijosune
  */
-class Quaver extends Note {
+public class InvalidNoteTypeException extends Exception{
     
-    public Quaver (int pitch, int volume) {
-        super(Sheet.beatSections / 2, pitch, volume); // One beat can be divided into maximum of 12 parts
-    }
-    
-    public Quaver (int pitch) {
-        this(pitch, Sheet.defaultVolume);
+    public InvalidNoteTypeException(String message) {
+        super(message);
     }
     
 }
