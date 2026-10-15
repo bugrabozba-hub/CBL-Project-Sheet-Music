@@ -11,11 +11,13 @@ import javax.swing.JFrame;
 public class CBL_SheetMusicPlayer {
     
     public static void main(String[] args) {
-        GUIJFrame mainAppWindow = new GUIJFrame();
+        GUIJFrame appWindow = new GUIJFrame();
         
-        mainAppWindow.setTitle("Sheet Music Player");
-        mainAppWindow.setLocationRelativeTo(null); 
-        mainAppWindow.setVisible(true);
+        appWindow.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        
+        appWindow.setTitle("Sheet Music Player");
+        appWindow.setLocationRelativeTo(null); 
+        appWindow.setVisible(true);
         
         Bar test = new Bar();
         test.play();

@@ -171,6 +171,7 @@ public class GUIJFrame extends javax.swing.JFrame {
 
         PreviousButton.setBackground(new java.awt.Color(255, 255, 255));
         PreviousButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/previous-iconx20.png"))); // NOI18N
+        PreviousButton.addActionListener(this::PreviousButtonActionPerformed);
         Buttons.add(PreviousButton);
 
         PlayButton.setBackground(new java.awt.Color(255, 255, 255));
@@ -182,6 +183,7 @@ public class GUIJFrame extends javax.swing.JFrame {
         nextButton.setBackground(new java.awt.Color(255, 255, 255));
         nextButton.setForeground(new java.awt.Color(0, 0, 0));
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/nextButtonx20.png"))); // NOI18N
+        nextButton.addActionListener(this::nextButtonActionPerformed);
         Buttons.add(nextButton);
 
         noteSemiSelector.setBackground(new java.awt.Color(51, 51, 51));
@@ -260,6 +262,7 @@ public class GUIJFrame extends javax.swing.JFrame {
         resetButton.setForeground(new java.awt.Color(0, 0, 0));
         resetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/reset-iconx20.png"))); // NOI18N
         resetButton.setText("  Reset");
+        resetButton.addActionListener(this::resetButtonActionPerformed);
 
         deleteButton.setBackground(new java.awt.Color(255, 255, 255));
         deleteButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -423,8 +426,20 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fortissimoButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        
+        //Delete TO DO
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_resetButtonActionPerformed
+
+    private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PreviousButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Buttons;

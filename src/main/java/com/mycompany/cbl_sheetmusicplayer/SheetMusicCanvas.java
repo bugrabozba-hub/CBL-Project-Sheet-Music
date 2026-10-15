@@ -19,7 +19,8 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     //for mouse tracking
     private int hoverX = -1;
     private int hoverY = -1;
-    
+    private int hoverSlotX = -1;
+
     //drawing the sheetmusic
     private final int topStaffY = 100;
     private final int lineSpacing = 16;
@@ -28,8 +29,14 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     private final int lowestNote = 55; //lowest G (violin)
     private final int highestNote = 92; //highest G
     
+    private java.awt.Image trebleClefImage;
+    private java.awt.Image timeSignatureImage;
+    
     public void mouseClicked(MouseEvent m) {
+        int startX = 150;
+        int slotWidth = 40;
         
+        //horizontal slotting
     }
     
     public SheetMusicCanvas() {
@@ -40,10 +47,18 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         
         setPreferredSize(new Dimension(570,640));
         
+        try {
+            trebleClefImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/treble-clefx64.png")).getImage();
+            timeSignatureImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/timeSignature-removebgx64.png")).getImage();
+        } catch (Exception e) {
+            System.out.println("Image not found!");
+        }
     } 
     
     
     public void mousePressed(MouseEvent e) {
+        
+        
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -55,6 +70,7 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     public void mouseExited(MouseEvent e) {
         hoverX = -1;
         hoverY = -1;
+        hoverSlotX = -1;
         repaint();
     }
 
@@ -70,6 +86,12 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         int offsetFromTop = e.getY() - topStaffY;
         int stepIndex = Math.round((float) offsetFromTop / stepDistance);
         hoverY = topStaffY + (stepIndex * stepDistance);
+        
+        if (hoverX >= 150 && hoverX < 640) {
+            hoverSlotX = (hoverX - 160) / 30;
+        } else {
+            hoverSlotX = -1;
+        }
     
         repaint();    
     }
@@ -105,8 +127,24 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         // 2. Draw hover preview note if mouse is inside the panel
         if (hoverX != -1 && hoverY != -1) {
             lineDrawer.setColor(new Color(0, 102, 204, 160)); //blue
-            lineDrawer.fillOval(hoverX - 7, hoverY - 5, 14, 10);
+            int centerX = 160 + (hoverSlotX * 30) + 20;
+            lineDrawer.fillOval(centerX - 7, hoverY - 5, 14, 10);
         }
+        
+        //draw treble clefs
+        if (trebleClefImage != null) {
+            for (int i = 0; i < sheetLineCount; i++) {
+                lineDrawer.drawImage(trebleClefImage, 40, (topStaffY - 20) + (144 * i), 50, 100, this);
+            }
+        }
+        
+        //draw time signatures
+        if (timeSignatureImage != null) {
+            for (int i = 0; i < sheetLineCount; i++) {
+                lineDrawer.drawImage(timeSignatureImage, 80, (topStaffY - 12) + (144 * i), 45, 90, this);
+            }
+        }
+        //(image, x, y, width, height, observer)
 
         lineDrawer.dispose();
     }
