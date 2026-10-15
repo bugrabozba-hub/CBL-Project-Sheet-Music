@@ -5,13 +5,13 @@
 package com.mycompany.cbl_sheetmusicplayer;
 
 import javax.sound.midi.MidiUnavailableException;
+import javax.swing.JFrame;
 
 /**
  *
  * @author bugra
  */
 public class CBL_SheetMusicPlayer {
-
     public static void main(String[] args) throws MidiUnavailableException, InterruptedException, NoteTooLongException {
         Bar test = new Bar();
         
@@ -25,7 +25,16 @@ public class CBL_SheetMusicPlayer {
             System.out.println("Bro check yo code");
         }
         Sheet.play();
-        test.play();
+
+        GUIJFrame appWindow = new GUIJFrame();
+        
+        appWindow.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        
+        appWindow.setTitle("Sheet Music Player");
+        appWindow.setLocationRelativeTo(null); 
+        appWindow.setVisible(true);
+        
+        Bar test = new Bar();
         test.play();
         
         

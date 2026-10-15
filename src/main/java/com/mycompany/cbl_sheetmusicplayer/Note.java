@@ -64,6 +64,7 @@ public class Note {
         Sheet.channel.noteOff(this.pitch);
 
     }
+
     
     
     public int getDuration() {

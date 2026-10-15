@@ -10,4 +10,17 @@
         <maven.compiler.release>26</maven.compiler.release>
         <exec.mainClass>com.mycompany.cbl_sheetmusicplayer.CBL_SheetMusicPlayer</exec.mainClass>
     </properties>
+<build>
+    <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.png</include>
+            </includes>
+        </resource>
+        <resource>
+            <directory>src/main/resources</directory>
+        </resource>
+    </resources>
+</build>
 </project>
