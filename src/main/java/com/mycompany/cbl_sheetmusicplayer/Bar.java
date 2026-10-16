@@ -13,27 +13,24 @@ import javax.sound.midi.*;
 
 public class Bar {
     
-    private int beats;
-    private int lastNote = 0;
+    ArrayList<Phonetic> Phonetics = new ArrayList<>();
     
-    public Bar(int beats) {
-        this.beats = beats;
-    }
-    
-    public Bar() {
-        this(Sheet.getTimeSignature());
-    }
-    
-    ArrayList<Note> Notes = new ArrayList<>();
-    
+    /**
+     * 
+     * @return Maximum length of the phonetics inside the Bar
+     */
     int getLength() {                   
-        int sum = 0;
+        int max = 0;
+        int size;
         
-        for (Note i: Notes) {
-            sum += i.getDuration();
+        for (int i = 0; i < Phonetics.size(); i++) {
+            size = Phonetics.get(i).getLength();
+            if (size > max) {
+                max = size;
+            }
         }
         
-        return sum;
+        return max;
     }
     
     /**
@@ -41,123 +38,155 @@ public class Bar {
      * @return 
      */
     boolean isFilled() {
-        int length = this.getLength();
         
-        if (length == (this.beats * Sheet.beatSections)){
-            return true;
+        for (Phonetic i: Phonetics) {
+            if (i.isFilled()) {
+                return true;
+            }
         }
         
         return false;
     }
     
     boolean isFull() {
-        int length = this.getLength();
         
-        if (length >= (this.beats * Sheet.beatSections)){
-            return true;
+        for (Phonetic i: Phonetics) {
+            if (! i.isFilled()) {
+                return false;
+            }
         }
         
-        return false;
+        return true;
     }
     
     /**
-     * Fills the rest of the bar with rests.
+     * Fills the most full phonetic with rests.
+     * Must note that if there are two of the same lenght
+     * then the method will chose the phonetic that goes
+     * first, so the oldest one so to say.
      */
     private void fill() {
-        int diff = (this.beats * Sheet.beatSections) - this.getLength();
-        
-        // Stop if the bar dosen't need filling
-        if (diff <= 0) return;
-        
-        // Fill the necessary SemiQuaver rests
-        // Number of semiq. = (portions of beat left) / (length of a semiq.)
-        int semidiff = (diff % Sheet.beatSections) / (Sheet.beatSections / 4);
-        for (int i = 0; i < semidiff; i++){
-            Notes.add(new Note(0, Sheet.defaultPitch, 0));
+        //Checks if already is filled
+        if (this.isFilled()){
+            return;
         }
         
-        // Fill necesary Crochet rests
-        diff = diff / Sheet.beatSections;
-        for (int i = 0; i < diff; i++){
-            Notes.add(new Note(2, Sheet.defaultPitch, 0));
+        int MaxPhonetic = 0;
+        int maxLength = -1;
+        int tempLength;
+        
+        // For all of the phonetics
+        for (int i = 0; i < Phonetics.size(); i++) {
+            // Finds its length
+            tempLength = Phonetics.get(i).getLength();
+            
+            // Makes it the max. if its higher than the one before. 
+            if (maxLength < tempLength) {
+                maxLength = tempLength;
+                MaxPhonetic = i;
+            }
+        }
+        
+        // Fills the max. phonetic
+        Phonetics.get(MaxPhonetic).fill();
+    }
+    
+    /**
+     * Plays the bar.
+     * The method activates all of the Phonetic threads one
+     * at a time, stops if the user decides to stop playing
+     * the whole sheet.
+     * @throws InterruptedException
+     */
+    void play() throws InterruptedException {
+        this.fill();
+        int a = 0;
+        for (Phonetic i: Phonetics) {
+            i.run();
+            if (Sheet.getStop()){
+                return;
+            }
         }
     }
     
     /**
-     * 
-     * @param LastNote Note from which the playing should start
-     * @return Next note to be played when playing again.
+     * Deletes all the notes that are closest to the end
+     * of the bar.
      */
-    int play(int LastNote) throws InterruptedException {
-        
-        this.fill();
-        
-        for (int i = LastNote; i < this.Notes.size(); i++) {
-            this.Notes.get(i).play();
-            
-            if (Sheet.getStop()) {
-                return i;
-            }
-        }
-        return 0;   
-    }
-    
-    void play() throws InterruptedException {
-        
-        for (int i = lastNote; i < Notes.size(); i++) {
-            Notes.get(i).play();
-            
-            if (Sheet.getStop()) {
-                lastNote = i;
-            }
-        }
-        
-        lastNote = 0;        
-    }
-    
-    void deleteNote(int place) {
-        Notes.remove(place);
-    }
-    
     void deleteNote() {
-        deleteNote(Notes.size() - 1); // Last note
+        // Remembers all phonetics that should change
+        ArrayList<Phonetic> Change = new ArrayList<>();
+        int max = -1;
+        int temp;
+        int lastNoteDuration;
+        int samallestNote = -1;
+        
+        for (Phonetic i: Phonetics) {
+            temp = i.getLength();
+            
+            // Searches for the phonetics of the biggest size
+            if (temp > max) {
+                max = temp;
+                Change.clear();
+            }
+            if (temp == max) {
+                lastNoteDuration = 
+                        i.getNotes().getLast().getDuration();
+                
+                /* Inside the phonetics of the biggest size,
+                it selects those with the smallest note at
+                the end. 
+                */
+                if (samallestNote > lastNoteDuration) {
+                    samallestNote = lastNoteDuration;
+                    Change.clear();
+                }
+                if (samallestNote == lastNoteDuration) {
+                    Change.add(i);
+                }
+            }
+        }
+        
     }
     
     /**
      * Clears all notes from the bar
      */
     void clear() {
-        int repetitions = Notes.size();
-        for (int i = 0; i < repetitions; i++) {
-            this.deleteNote();
-        }
+        Phonetics.clear();
     }
     
-    public int getNotes() {
-        return Notes.size();
+    public int getNumberofPhonetics() {
+        return Phonetics.size();
     }
     
-    public void addNote (int type, int pitch, int volume)
+    public void addNote (int place, int type, int pitch, int volume)
             throws NoteTooLongException, InvalidNoteTypeException {
         
+        // For internal problems, We deal with notes 0-4.
         if (type < 0 | type > 4) {
             throw new InvalidNoteTypeException("Note type should be between 0 and 4");
         }
         
-        int addLength = 1;
-        
-        // calculates added lenght through power of two.
-        for (int i = 0; i < type; i++) {
-            addLength *= 2;
-        }
-        
-        if (this.getLength() + addLength > this.beats * Sheet.beatSections) {
-            throw new NoteTooLongException("Note makes bar exceeds" + this.beats + " beats.");
-        }
-        
-        Note AddedNote = new Note(addLength, pitch, volume);
-        
-        Notes.add(AddedNote);
+        int i = 0;
+        // Keep going until it finds a place for the note.
+        while(true) {
+            try {
+                Phonetics.get(i).addNote(place, type, pitch, volume);
+                break;
+            } catch(NoteTooLongException e) {
+                // If the note dosent fit go to the next
+                i++;
+            } catch(IndexOutOfBoundsException e) {
+                /* If there are no more phonetics left then 
+                create a new one.
+                */
+                Phonetics.add(new Phonetic());
+            } catch(InvalidNoteTypeException e) {
+                // Note of this type can't fit in this place
+                throw new NoteTooLongException(e.getMessage());
+            }
+        }        
     }
     
     
