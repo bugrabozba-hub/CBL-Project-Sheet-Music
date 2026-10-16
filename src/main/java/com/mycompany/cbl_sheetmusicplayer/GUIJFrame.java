@@ -4,6 +4,8 @@
  */
 package com.mycompany.cbl_sheetmusicplayer;
 
+import javax.sound.midi.MidiUnavailableException;
+
 /**
  *
  * @author bugra
@@ -15,6 +17,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }
     
     private boolean isRest = false;
+    private boolean isPlaying = false; 
 
     /**
      * Creates new form GUIJFrame
@@ -29,6 +32,7 @@ public class GUIJFrame extends javax.swing.JFrame {
         //mf is selected as default
         SheetMusicCanvas canvas = new SheetMusicCanvas();
         this.add(canvas);
+        
         
         setSize(730,750);
     }
@@ -406,7 +410,17 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pianissimoButtonActionPerformed
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
-        // TODO add your handling code here:
+        if (PlayButton.isSelected()) {
+            try {
+                Sheet.play();
+            } catch (MidiUnavailableException ex) {
+                System.getLogger(GUIJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            } catch (InterruptedException ex) {
+                System.getLogger(GUIJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        } else {
+            Sheet.setStop(true);
+        }
     }//GEN-LAST:event_PlayButtonActionPerformed
 
     private void mezzoPianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoPianoButtonActionPerformed

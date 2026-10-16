@@ -58,7 +58,6 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     
     public void mousePressed(MouseEvent e) {
         
-        
     }
 
     public void mouseReleased(MouseEvent e) {

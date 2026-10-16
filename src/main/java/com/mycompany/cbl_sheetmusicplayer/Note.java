@@ -36,7 +36,6 @@ public class Note {
         }
     }
     
-    
     public Note (int duration, int pitch) {
         this(duration, pitch, 100); // Default volume is 100
     }
@@ -64,8 +63,6 @@ public class Note {
         Sheet.channel.noteOff(this.pitch);
 
     }
-
-    
     
     public int getDuration() {
         return this.duration;
