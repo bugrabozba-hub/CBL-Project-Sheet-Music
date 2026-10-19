@@ -65,6 +65,7 @@ public class Note {
 
         channel.noteOff(this.pitch);
     }
+
     
     
     public int getDuration() {
