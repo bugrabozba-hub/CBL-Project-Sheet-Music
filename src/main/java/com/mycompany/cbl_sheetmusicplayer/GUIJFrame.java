@@ -30,9 +30,6 @@ public class GUIJFrame extends javax.swing.JFrame {
         //natural is selected as default
         mezzoForteButton.setSelected(true);
         //mf is selected as default
-        SheetMusicCanvas canvas = new SheetMusicCanvas();
-        this.add(canvas);
-        
         
         setSize(730,750);
     }
@@ -406,7 +403,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_flatButtonActionPerformed
 
     private void pianissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianissimoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (3 / 5);
+        int volume = Sheet.defaultVolume * 3 / 5;
     }//GEN-LAST:event_pianissimoButtonActionPerformed
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
@@ -424,19 +421,19 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayButtonActionPerformed
 
     private void mezzoPianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoPianoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (4 / 5);
+        int volume = Sheet.defaultVolume * 4 / 5;
     }//GEN-LAST:event_mezzoPianoButtonActionPerformed
 
     private void pianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (3 / 5);
+        int volume = Sheet.defaultVolume * 3 / 5;
     }//GEN-LAST:event_pianoButtonActionPerformed
 
     private void forteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forteButtonActionPerformed
-        int volume = Sheet.defaultVolume * (6 / 5);
+        int volume = Sheet.defaultVolume * 6 / 5;
     }//GEN-LAST:event_forteButtonActionPerformed
 
     private void fortissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fortissimoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (7 / 5);
+        int volume = Sheet.defaultVolume * 7 / 5;
     }//GEN-LAST:event_fortissimoButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed

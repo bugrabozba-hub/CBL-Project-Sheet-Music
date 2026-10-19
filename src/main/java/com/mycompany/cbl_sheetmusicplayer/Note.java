@@ -15,7 +15,7 @@ public class Note {
     // 55 - 92 (both including)
 
     private int duration;        //
-    private int pitch;          //the note character basically 
+    public int pitch;          //the note character basically 
     private boolean isRest;     
     private boolean isUpper;  //going to be used to define the line extending the note
     private int volume;       //the loudness of the note
