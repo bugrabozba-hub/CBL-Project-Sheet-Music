@@ -16,9 +16,9 @@ public class CBL_SheetMusicPlayer {
         Bar test = new Bar();
         
         try {
-            test.addNote(0, 2, Sheet.defaultPitch-7, Sheet.defaultVolume);
-            test.addNote(1, 2, Sheet.defaultPitch-4, Sheet.defaultVolume);
-            test.addNote(2, 3, Sheet.defaultPitch, Sheet.defaultVolume);
+            test.addNote(0, 1, Sheet.defaultPitch-7, Sheet.defaultVolume);
+            test.addNote(15, 0, Sheet.defaultPitch-4, Sheet.defaultVolume);
+            test.addNote(0, 3, Sheet.defaultPitch, Sheet.defaultVolume);
             
             /*
             test.addNote(0, 1, Sheet.defaultPitch, Sheet.defaultVolume);

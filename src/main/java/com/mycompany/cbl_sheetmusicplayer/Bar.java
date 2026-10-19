@@ -100,19 +100,32 @@ public class Bar {
      */
     void play() throws InterruptedException {
         this.fill();
-        int a = 0;
+        //Remember all of the Threads to be created
+        ArrayList<Thread> Threads = new ArrayList<>();
+        
         for (Phonetic i: Phonetics) {
-            Thread myThread = new Thread(i);
-            myThread.start();
+            // Stop if user wants to.
             if (Sheet.getStop()){
                 return;
             }
+            
+            // Create a new thread
+            Thread myThread = new Thread(i);
+            myThread.start();
+            
+            // Remember the created thread
+            Threads.add(myThread);
+        }
+        
+        // Wait for all of the created threads to end.
+        for (Thread i: Threads) {
+            i.join();
         }
     }
     
     /**
      * Deletes all the notes that are closest to the end
-     * of the bar.
+     * of the bar and of the smallest size available. 
      */
     void deleteNote() {
         // Remembers all phonetics that should change
@@ -146,6 +159,11 @@ public class Bar {
                     Change.add(i);
                 }
             }
+        }
+        
+        // Once they are found, the last note is deleted.
+        for (Phonetic i: Change) {
+            i.deleteNote();
         }
         
     }
@@ -182,7 +200,7 @@ public class Bar {
                 /* If there are no more phonetics left then 
                 create a new one.
                 */
-                Phonetics.add(new Phonetic());
+                Phonetics.add(new Phonetic(Phonetics.size()));
             } catch(InvalidNoteTypeException e) {
                 // Note of this type can't fit in this place
                 throw new NoteTooLongException(e.getMessage());

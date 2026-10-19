@@ -13,7 +13,7 @@ import javax.sound.midi.*;
 public class Sheet {
     
     private static int instrument = 40; //40 = violin
-    private static int bpm = 100;
+    private static int bpm = 40;
     private static int[] TimeSignature = {4, 4};
     private static boolean stop;
     private static ArrayList<Bar> Bars = new ArrayList<>();
@@ -24,7 +24,6 @@ public class Sheet {
     protected final static int defaultPitch = 69; // 69 = A4
     
     protected static Synthesizer synth;
-    protected static MidiChannel channel;
     
     //test 
     
@@ -37,11 +36,11 @@ public class Sheet {
     }
     
     public static int getBpm() {
-        return instrument;
+        return bpm;
     }
     
-    public static void setBpm(int NewInstrument) {
-        instrument = NewInstrument;
+    public static void setBpm(int NewBPM) {
+        bpm = NewBPM;
     }
     
     public static boolean getStop() {
@@ -77,7 +76,6 @@ public class Sheet {
     public static void play() throws MidiUnavailableException, InterruptedException {
         synth = MidiSystem.getSynthesizer();
         synth.open();
-        channel = synth.getChannels()[0];
         
         for (int i = lastBar; i < Bars.size(); i++) {
             Bars.get(i).play();

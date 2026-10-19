@@ -4,6 +4,7 @@
  */
 package com.mycompany.cbl_sheetmusicplayer;
 
+import static com.mycompany.cbl_sheetmusicplayer.Sheet.synth;
 import javax.sound.midi.*;
 
 /**
@@ -53,16 +54,16 @@ public class Note {
     
     //public abstract void draw();
     
-    public void play() throws InterruptedException {
-        Sheet.channel.programChange(Sheet.getInstrument()); // 40 Violin
-        Sheet.channel.noteOn(this.pitch, this.volume);
+    public void play(int place) throws InterruptedException {
+        MidiChannel channel = synth.getChannels()[place];
+        channel.programChange(Sheet.getInstrument()); // 40 Violin
+        channel.noteOn(this.pitch, this.volume);
 
-        int time = (6000 / Sheet.getBpm()) * this.duration;
+        int time = (15000 / Sheet.getBpm()) * this.duration;
 
         Thread.sleep(time);
 
-        Sheet.channel.noteOff(this.pitch);
-
+        channel.noteOff(this.pitch);
     }
     
     
