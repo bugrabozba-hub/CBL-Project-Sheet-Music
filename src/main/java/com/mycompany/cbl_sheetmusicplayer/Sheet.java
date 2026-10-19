@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.cbl_sheetmusicplayer;
-import java.util.ArrayList; 
 import javax.sound.midi.*;
 
 /**
@@ -13,10 +12,10 @@ import javax.sound.midi.*;
 public class Sheet {
     
     private static int instrument = 40; //40 = violin
-    private static int bpm = 100;
+    private static int bpm = 40;
     private static int[] TimeSignature = {4, 4};
     private static boolean stop;
-    private static ArrayList<Bar> Bars = new ArrayList<>();
+    private static Bar[] Bars = new Bar[3];
     private static int lastBar;
     
     protected final static int beatSections = 4; // For now, any multiple of 4.
@@ -24,7 +23,6 @@ public class Sheet {
     protected final static int defaultPitch = 69; // 69 = A4
     
     protected static Synthesizer synth;
-    protected static MidiChannel channel;
     
     //test 
     
@@ -37,11 +35,11 @@ public class Sheet {
     }
     
     public static int getBpm() {
-        return instrument;
+        return bpm;
     }
     
-    public static void setBpm(int NewInstrument) {
-        instrument = NewInstrument;
+    public static void setBpm(int NewBPM) {
+        bpm = NewBPM;
     }
     
     public static boolean getStop() {
@@ -77,10 +75,9 @@ public class Sheet {
     public static void play() throws MidiUnavailableException, InterruptedException {
         synth = MidiSystem.getSynthesizer();
         synth.open();
-        channel = synth.getChannels()[0];
         
-        for (int i = lastBar; i < Bars.size(); i++) {
-            Bars.get(i).play();
+        for (int i = lastBar; i < Bars.length; i++) {
+            Bars[i].play();
             
             if (stop) {
                 lastBar = i;
@@ -98,7 +95,13 @@ public class Sheet {
         }
     }
     
-    public static void addBar(Bar element){
-        Bars.add(element);
+    public static void addNote (int bar, int place, int type, int pitch, int volume) 
+            throws NoteTooLongException, InvalidNoteTypeException {
+        
+        if (Bars[bar] == null) {
+            Bars[bar] = new Bar();
+        }
+        
+        Bars[bar].addNote(place, type, pitch, volume);
     }
 }
