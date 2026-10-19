@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.cbl_sheetmusicplayer;
-import java.util.ArrayList; 
 import javax.sound.midi.*;
 
 /**
@@ -16,7 +15,7 @@ public class Sheet {
     private static int bpm = 40;
     private static int[] TimeSignature = {4, 4};
     private static boolean stop;
-    private static ArrayList<Bar> Bars = new ArrayList<>();
+    private static Bar[] Bars = new Bar[3];
     private static int lastBar;
     
     protected final static int beatSections = 4; // For now, any multiple of 4.
@@ -77,8 +76,8 @@ public class Sheet {
         synth = MidiSystem.getSynthesizer();
         synth.open();
         
-        for (int i = lastBar; i < Bars.size(); i++) {
-            Bars.get(i).play();
+        for (int i = lastBar; i < Bars.length; i++) {
+            Bars[i].play();
             
             if (stop) {
                 lastBar = i;
@@ -93,5 +92,15 @@ public class Sheet {
         for (Bar i: Bars) {
             i.clear();
         }
+    }
+    
+    public static void addNote (int bar, int place, int type, int pitch, int volume) 
+            throws NoteTooLongException, InvalidNoteTypeException {
+        
+        if (Bars[bar] == null) {
+            Bars[bar] = new Bar();
+        }
+        
+        Bars[bar].addNote(place, type, pitch, volume);
     }
 }
