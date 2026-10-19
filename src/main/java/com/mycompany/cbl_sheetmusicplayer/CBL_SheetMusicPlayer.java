@@ -33,10 +33,7 @@ public class CBL_SheetMusicPlayer {
         appWindow.setTitle("Sheet Music Player");
         appWindow.setLocationRelativeTo(null); 
         appWindow.setVisible(true);
-        
-        Bar test = new Bar();
-        test.play();
-        
+                
         
         
     }
