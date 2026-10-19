@@ -34,9 +34,17 @@ public class CBL_SheetMusicPlayer {
             System.out.println(a.getLocalizedMessage());
         }
         Sheet.play();
+        Sheet.addBar(test);
+
+        GUIJFrame appWindow = new GUIJFrame();
+        
+        appWindow.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        
+        appWindow.setTitle("Sheet Music Player");
+        appWindow.setLocationRelativeTo(null); 
+        appWindow.setVisible(true);
+        
         test.play();
-        
-        
         
     }
 }

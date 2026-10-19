@@ -4,6 +4,8 @@
  */
 package com.mycompany.cbl_sheetmusicplayer;
 
+import javax.sound.midi.MidiUnavailableException;
+
 /**
  *
  * @author bugra
@@ -15,6 +17,11 @@ public class GUIJFrame extends javax.swing.JFrame {
     }
     
     private boolean isRest = false;
+    private boolean isPlaying = false; 
+    public int type = 1; 
+    public int volume = 100;
+    public int pitch;
+    public int selectedAccidental;
 
     /**
      * Creates new form GUIJFrame
@@ -27,12 +34,25 @@ public class GUIJFrame extends javax.swing.JFrame {
         //natural is selected as default
         mezzoForteButton.setSelected(true);
         //mf is selected as default
-        SheetMusicCanvas canvas = new SheetMusicCanvas();
-        this.add(canvas);
         
         setSize(730,750);
     }
-
+    
+    public int getVolume() {
+        return volume;
+    }
+    
+    public int getNoteType() {
+        return type;
+    }
+    
+    public int getPitch() {
+        return pitch;
+    }
+    
+    public int getSelectedAccidental() {
+        return selectedAccidental;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -332,22 +352,22 @@ public class GUIJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void quaverRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quaverRestButtonActionPerformed
-        int type = 1;
+        type = 1;
         isRest = true;
     }//GEN-LAST:event_quaverRestButtonActionPerformed
 
     private void semiBreveRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiBreveRestButtonActionPerformed
-        int type = 4;
+        type = 4;
         isRest = true;
     }//GEN-LAST:event_semiBreveRestButtonActionPerformed
 
     private void minimRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimRestButtonActionPerformed
-        int type = 3;
+        type = 3;
         isRest = true;
     }//GEN-LAST:event_minimRestButtonActionPerformed
 
     private void semiBreveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiBreveButtonActionPerformed
-        int type = 4;
+        type = 4;
         isRest = false;
     }//GEN-LAST:event_semiBreveButtonActionPerformed
 
@@ -356,73 +376,83 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_TitleActionPerformed
 
     private void semiQuaverRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiQuaverRestButtonActionPerformed
-        int type = 0;
+        type = 0;
         isRest = true;
     }//GEN-LAST:event_semiQuaverRestButtonActionPerformed
 
     private void minimButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimButtonActionPerformed
-        int type = 3;
+        type = 3;
         isRest = false;
     }//GEN-LAST:event_minimButtonActionPerformed
 
     private void crochetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crochetButtonActionPerformed
-        int type = 2;
+        type = 2;
         isRest = false;
     }//GEN-LAST:event_crochetButtonActionPerformed
 
     private void quaverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quaverButtonActionPerformed
-        int type = 1;
+        type = 1;
         isRest = false;
     }//GEN-LAST:event_quaverButtonActionPerformed
 
     private void semiQuaverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiQuaverButtonActionPerformed
-        int type = 0;
+        type = 0;
         isRest = false;
     }//GEN-LAST:event_semiQuaverButtonActionPerformed
 
     private void crochetRestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crochetRestActionPerformed
-        int type = 2;
+        type = 2;
         isRest = true;
     }//GEN-LAST:event_crochetRestActionPerformed
 
     private void mezzoForteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoForteButtonActionPerformed
-        int volume = Sheet.defaultVolume;
+        volume = Sheet.defaultVolume;
     }//GEN-LAST:event_mezzoForteButtonActionPerformed
 
     private void sharpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sharpButtonActionPerformed
-        int pitch = Sheet.defaultPitch + 1;
+        selectedAccidental = +1; 
     }//GEN-LAST:event_sharpButtonActionPerformed
 
     private void naturalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_naturalButtonActionPerformed
-        int pitch = Sheet.defaultPitch;
+        selectedAccidental = 0; 
     }//GEN-LAST:event_naturalButtonActionPerformed
 
     private void flatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flatButtonActionPerformed
-        int pitch = Sheet.defaultPitch - 1;
+        selectedAccidental = -1; 
     }//GEN-LAST:event_flatButtonActionPerformed
 
     private void pianissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianissimoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (3 / 5);
+        volume = Sheet.defaultVolume * 3 / 5;
     }//GEN-LAST:event_pianissimoButtonActionPerformed
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
-        // TODO add your handling code here:
+        if (PlayButton.isSelected()) {
+            try {
+                Sheet.play();
+            } catch (MidiUnavailableException ex) {
+                System.getLogger(GUIJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            } catch (InterruptedException ex) {
+                System.getLogger(GUIJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        } else {
+            Sheet.setStop(true);
+        }
     }//GEN-LAST:event_PlayButtonActionPerformed
 
     private void mezzoPianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoPianoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (4 / 5);
+        volume = Sheet.defaultVolume * 4 / 5;
     }//GEN-LAST:event_mezzoPianoButtonActionPerformed
 
     private void pianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (3 / 5);
+        volume = Sheet.defaultVolume * 3 / 5;
     }//GEN-LAST:event_pianoButtonActionPerformed
 
     private void forteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forteButtonActionPerformed
-        int volume = Sheet.defaultVolume * (6 / 5);
+        volume = Sheet.defaultVolume * 6 / 5;
     }//GEN-LAST:event_forteButtonActionPerformed
 
     private void fortissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fortissimoButtonActionPerformed
-        int volume = Sheet.defaultVolume * (7 / 5);
+        volume = Sheet.defaultVolume * 7 / 5;
     }//GEN-LAST:event_fortissimoButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -430,7 +460,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-        // TODO add your handling code here:
+        Sheet.ClearAll();
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed

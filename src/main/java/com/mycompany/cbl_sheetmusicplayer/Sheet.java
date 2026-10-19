@@ -81,6 +81,7 @@ public class Sheet {
             
             if (stop) {
                 lastBar = i;
+                return;
             }
         }
         
