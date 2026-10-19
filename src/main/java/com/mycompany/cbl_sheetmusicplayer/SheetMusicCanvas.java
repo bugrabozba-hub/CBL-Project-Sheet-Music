@@ -32,6 +32,9 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
 
     private final int[] scale = {0, 2, 4, 5, 7, 9, 11};
     
+    boolean placed = false;
+    GUIJFrame sheet = new GUIJFrame();
+    
     private java.awt.Image trebleClefImage;
     private java.awt.Image timeSignatureImage;
     
@@ -56,13 +59,12 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     int selectedDuration = 4;
     
     public void mousePressed(MouseEvent e) {
-        GUIJFrame sheet = new GUIJFrame();
+        
         int startX = 150;
         int slotWidth = 30;
         int slot = (e.getX() - 150) / 30;
         int Line = (e.getY() - topStaffY + 40 ) / 144;
-        GUIJFrame acc = new GUIJFrame();
-        int selectedAccidental = acc.getSelectedAccidental();
+        int selectedAccidental = sheet.getSelectedAccidental();
         
         hoverX = e.getX();
         
@@ -88,16 +90,18 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         if (hoverSlotX >= 0) {
            sheet.getNoteType();
            sheet.getPitch();
+           placed = true;
            
-           Sheet.addNote(Line, slot,sheet.getNoteType() , pitch, sheet.getVolume());
+           Sheet.addNote(Line, slot, sheet.getNoteType() , pitch, sheet.getVolume());
            System.out.println("line " + Line + " slot " + slot + " pitch " + pitch);   // test line
+           
+
            repaint();
         }
-        
-        //horizontal slotting
     }
 
     public void mouseReleased(MouseEvent e) {
+        placed = false;
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -136,9 +140,6 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D paint = (Graphics2D) g.create();
-
-        // Enable smooth lines / just in case :)
-        //lineDrawer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // 1. Draw the 5 main staff lines
         paint.setColor(Color.BLACK);
@@ -184,6 +185,15 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
             }
         }
         //(image, x, y, width, height, observer)
+        if (placed) {
+            if (sheet.getNoteType() == 1) {
+            paint.setColor(Color.BLACK); 
+            int centerX = 150 + (hoverSlotX * 30) + 15;
+
+            paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
+            paint.drawLine(centerX + 7, hoverY - 5, centerX + 7, hoverY + 15);
+            }
+        }
 
         paint.dispose();
     }
