@@ -102,7 +102,8 @@ public class Bar {
         this.fill();
         int a = 0;
         for (Phonetic i: Phonetics) {
-            i.run();
+            Thread myThread = new Thread(i);
+            myThread.start();
             if (Sheet.getStop()){
                 return;
             }
