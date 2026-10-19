@@ -24,7 +24,7 @@ public class CBL_SheetMusicPlayer {
         } catch (Exception a) {
             System.out.println("Bro check yo code");
         }
-        Sheet.play();
+        Sheet.addBar(test);
 
         GUIJFrame appWindow = new GUIJFrame();
         
@@ -33,8 +33,8 @@ public class CBL_SheetMusicPlayer {
         appWindow.setTitle("Sheet Music Player");
         appWindow.setLocationRelativeTo(null); 
         appWindow.setVisible(true);
-                
         
+        test.play();
         
     }
 }

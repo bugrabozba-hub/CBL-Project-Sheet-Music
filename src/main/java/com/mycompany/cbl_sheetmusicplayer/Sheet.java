@@ -84,6 +84,7 @@ public class Sheet {
             
             if (stop) {
                 lastBar = i;
+                return;
             }
         }
         
@@ -95,5 +96,9 @@ public class Sheet {
         for (Bar i: Bars) {
             i.clear();
         }
+    }
+    
+    public static void addBar(Bar element){
+        Bars.add(element);
     }
 }
