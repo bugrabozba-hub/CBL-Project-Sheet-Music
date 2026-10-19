@@ -29,8 +29,7 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     
     private final int lowestNote = 55; //lowest G (violin)
     private final int highestNote = 92; //highest G
-    
-    private Note[] notes = new Note[16];
+
     private final int[] scale = {0, 2, 4, 5, 7, 9, 11};
     
     private java.awt.Image trebleClefImage;
@@ -57,11 +56,13 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     int selectedDuration = 4;
     
     public void mousePressed(MouseEvent e) {
-         
+        GUIJFrame sheet = new GUIJFrame();
         int startX = 150;
         int slotWidth = 30;
         int slot = (e.getX() - 150) / 30;
         int Line = (e.getY() - topStaffY + 40 ) / 144;
+        GUIJFrame acc = new GUIJFrame();
+        int selectedAccidental = acc.getSelectedAccidental();
         
         hoverX = e.getX();
         
@@ -82,10 +83,13 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
 
         // turn that into a midi number: 12 * octave + position in the scale
         int pitch = 12 * (betweenLineNote / 7 + 1) + scale[betweenLineNote % 7];
-        //pitch = pitch + selectedAccidental;    // -1 flat, 0 natural, +1 sharp
+        pitch = pitch + selectedAccidental;    
 
         if (hoverSlotX >= 0) {
-           notes[slot] = new Note(selectedDuration, pitch);     
+           sheet.getNoteType();
+           sheet.getPitch();
+           
+           Sheet.addNote(Line, slot,sheet.getNoteType() , pitch, sheet.getVolume());
            System.out.println("line " + Line + " slot " + slot + " pitch " + pitch);   // test line
            repaint();
         }
@@ -184,3 +188,4 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         paint.dispose();
     }
 }
+    
