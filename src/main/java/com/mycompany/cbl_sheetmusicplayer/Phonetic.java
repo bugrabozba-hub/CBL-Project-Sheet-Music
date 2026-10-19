@@ -173,15 +173,10 @@ public class Phonetic implements Runnable {
         }
         
         if (place + addLength > this.beats * Sheet.beatSections) {
-            /* Note at this place cannot fit in ant posssible
+            /* Note at this place cannot fit in any posssible
             bar of this size.
             */
             throw new InvalidNoteTypeException("Note makes any bar exceed" + this.beats + " beats.");
-        }
-        
-        if (ThisLength + addLength > this.beats * Sheet.beatSections) {
-            // Note dosen't fit in this specific bar.
-            throw new NoteTooLongException("Note makes bar exceeds" + this.beats + " beats.");
         }
         
         if (place < ThisLength) {
@@ -191,7 +186,14 @@ public class Phonetic implements Runnable {
             throw new NoteTooLongException("There already is a note here.");
         }
         
+        if (ThisLength + addLength > this.beats * Sheet.beatSections) {
+            // Note dosen't fit in this specific bar.
+            throw new NoteTooLongException("Note makes bar exceeds" + this.beats + " beats.");
+        }
+        
+        // Fill the phonetic up to the desired place
         this.fill(place);
+        // Finnally, add the note.
         Notes.add(new Note(addLength, pitch, volume));
     }
     
