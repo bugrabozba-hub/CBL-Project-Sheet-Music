@@ -66,7 +66,7 @@ public class GUIJFrame extends javax.swing.JFrame {
         noteSelectionButtons = new javax.swing.ButtonGroup();
         volumeSelectionButtons = new javax.swing.ButtonGroup();
         semiToneSelectionButtons = new javax.swing.ButtonGroup();
-        SheetMusicCanvas = new SheetMusicCanvas();
+        SheetMusicCanvas = new SheetMusicCanvas(this);
         Title = new javax.swing.JTextField();
         NoteSelectionPanel = new javax.swing.JPanel();
         semiBreveButton = new javax.swing.JToggleButton();
@@ -372,7 +372,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_semiBreveButtonActionPerformed
 
     private void TitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TitleActionPerformed
-        String Title;
+
     }//GEN-LAST:event_TitleActionPerformed
 
     private void semiQuaverRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semiQuaverRestButtonActionPerformed

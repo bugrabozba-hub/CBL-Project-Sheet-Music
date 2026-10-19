@@ -61,7 +61,7 @@ public class Bar {
     
     /**
      * Fills the most full phonetic with rests.
-     * Must note that if there are two of the same lenght
+     * Must note that if there are two of the same length
      * then the method will chose the phonetic that goes
      * first, so the oldest one so to say.
      */
@@ -88,7 +88,13 @@ public class Bar {
         }
         
         // Fills the max. phonetic
-        Phonetics.get(MaxPhonetic).fill();
+        try {
+            Phonetics.get(MaxPhonetic).fill();
+        } catch (IndexOutOfBoundsException a) {
+            Phonetic first = new Phonetic(0);
+            Phonetics.add(first);
+            first.fill();
+        }
     }
     
     /**
@@ -180,12 +186,7 @@ public class Bar {
     }
     
     public void addNote (int place, int type, int pitch, int volume)
-            throws NoteTooLongException, InvalidNoteTypeException {
-        
-        // For internal problems, We deal with notes 0-4.
-        if (type < 0 | type > 4) {
-            throw new InvalidNoteTypeException("Note type should be between 0 and 4");
-        }
+            throws NoteTooLongException {
         
         int i = 0;
         // Keep going until it finds a place for the note.

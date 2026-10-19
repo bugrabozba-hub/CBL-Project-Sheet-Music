@@ -27,20 +27,21 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     private final int lineSpacing = 16;
     private final int stepDistance = lineSpacing / 2;
     
+    private final GUIJFrame sheet;
+    
     private final int lowestNote = 55; //lowest G (violin)
     private final int highestNote = 92; //highest G
 
     private final int[] scale = {0, 2, 4, 5, 7, 9, 11};
     
-    boolean placed = false;
-    GUIJFrame sheet = new GUIJFrame();
-    
+    boolean placed = false;    
     private java.awt.Image trebleClefImage;
     private java.awt.Image timeSignatureImage;
     
-    public SheetMusicCanvas() {
+    public SheetMusicCanvas(GUIJFrame sheet) {
         this.addMouseMotionListener(this); 
         this.addMouseListener(this);
+        this.sheet = sheet;
         
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(680,640));
@@ -65,6 +66,8 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         int slot = (e.getX() - 150) / 30;
         int Line = (e.getY() - topStaffY + 40 ) / 144;
         int selectedAccidental = sheet.getSelectedAccidental();
+        int type = sheet.getNoteType();
+        int volume = sheet.getVolume();
         
         hoverX = e.getX();
         
@@ -92,7 +95,12 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
            sheet.getPitch();
            placed = true;
            
-           Sheet.addNote(Line, slot, sheet.getNoteType() , pitch, sheet.getVolume());
+           try {
+               Sheet.addNote(Line, slot, type, pitch, volume);
+            } catch (NoteTooLongException ex) {
+                System.getLogger(SheetMusicCanvas.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            } 
+            
            System.out.println("line " + Line + " slot " + slot + " pitch " + pitch);   // test line
            
 
@@ -187,11 +195,18 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         //(image, x, y, width, height, observer)
         if (placed) {
             if (sheet.getNoteType() == 1) {
-            paint.setColor(Color.BLACK); 
+            paint.setColor(Color.BLACK);        
+            paint.setStroke(new BasicStroke(1.5f));
+            int pitch = sheet.getPitch();                        //fix this tomorrow
             int centerX = 150 + (hoverSlotX * 30) + 15;
-
-            paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
-            paint.drawLine(centerX + 7, hoverY - 5, centerX + 7, hoverY + 15);
+                if (pitch < 71) {
+                    paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
+                    paint.drawLine(centerX + 7, hoverY, centerX + 7, hoverY - 48);
+                } 
+                if (pitch >= 71) {
+                    paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
+                    paint.drawLine(centerX - 7, hoverY, centerX - 7, hoverY + 48);
+                }
             }
         }
 

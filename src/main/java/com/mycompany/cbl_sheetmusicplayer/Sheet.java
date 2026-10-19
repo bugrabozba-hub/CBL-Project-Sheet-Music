@@ -16,7 +16,7 @@ public class Sheet {
     private static int[] TimeSignature = {4, 4};
     private static boolean stop;
     private static Bar[] Bars = new Bar[3];
-    private static int lastBar;
+    private static int lastBar = 0;
     
     protected final static int beatSections = 4; // For now, any multiple of 4.
     protected final static int defaultVolume = 100;
@@ -77,6 +77,10 @@ public class Sheet {
         synth.open();
         
         for (int i = lastBar; i < Bars.length; i++) {
+            if (Bars[i] == null) {
+                Bars[i] = new Bar();
+            }
+            
             Bars[i].play();
             
             if (stop) {
@@ -96,7 +100,7 @@ public class Sheet {
     }
     
     public static void addNote (int bar, int place, int type, int pitch, int volume) 
-            throws NoteTooLongException, InvalidNoteTypeException {
+            throws NoteTooLongException {
         
         if (Bars[bar] == null) {
             Bars[bar] = new Bar();

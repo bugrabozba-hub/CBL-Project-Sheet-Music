@@ -27,14 +27,13 @@ public class CBL_SheetMusicPlayer {
             test.addNote(6, 1, Sheet.defaultPitch + 2, Sheet.defaultVolume);
             test.addNote(0, 3, Sheet.defaultPitch - 9, Sheet.defaultVolume);
             */
-        } catch (NoteTooLongException | InvalidNoteTypeException a) {
+        } catch (NoteTooLongException a) {
             System.out.println("Bro check yo code");
             System.out.println(a.getClass());
             System.out.println(a.getMessage());
             System.out.println(a.getLocalizedMessage());
         }
         Sheet.play();
-        Sheet.addBar(test);
 
         GUIJFrame appWindow = new GUIJFrame();
         
