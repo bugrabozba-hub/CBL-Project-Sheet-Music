@@ -108,4 +108,6 @@ public class Sheet {
         
         Bars[bar].addNote(place, type, pitch, volume);
     }
+    
+    
 }

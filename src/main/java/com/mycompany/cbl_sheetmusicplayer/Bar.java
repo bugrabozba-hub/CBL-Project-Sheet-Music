@@ -6,7 +6,6 @@
 package com.mycompany.cbl_sheetmusicplayer;
 
 import java.util.ArrayList; 
-import javax.sound.midi.*;
 
 /**
  *
@@ -209,6 +208,20 @@ public class Bar {
                 throw new NoteTooLongException(e.getMessage());
             }
         }        
+    }
+    
+    public ArrayList<Note> getDrawNotes() {
+        ArrayList<Note> result = new ArrayList<>();
+        
+        for (Phonetic phonetic: Phonetics) {
+            for (Note i: phonetic.getNotes()){
+                if (! i.getisRest()) {
+                    result.add(i);
+                }
+            }
+        }
+        
+        return result;
     }
     
     
