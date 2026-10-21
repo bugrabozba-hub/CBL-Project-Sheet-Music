@@ -21,7 +21,7 @@ public class GUI {
 
             frame.setLocationRelativeTo(null);                          //Center the window on the screen
 
-            frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);   
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
             frame.setLayout(new FlowLayout());//close the application when window is closed
             

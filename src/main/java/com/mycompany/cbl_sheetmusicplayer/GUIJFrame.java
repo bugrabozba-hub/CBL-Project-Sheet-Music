@@ -1,6 +1,8 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit
+this template
  */
 package com.mycompany.cbl_sheetmusicplayer;
 
@@ -428,6 +430,8 @@ public class GUIJFrame extends javax.swing.JFrame {
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
         if (PlayButton.isSelected()) {
             try {
+                Sheet.setStop(false);
+                //Sheet.print();
                 Sheet.play();
             } catch (MidiUnavailableException ex) {
                 System.getLogger(GUIJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -456,7 +460,8 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fortissimoButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        //Delete TO DO
+        Bar bar = new Bar();
+        bar.deleteNote();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
@@ -464,7 +469,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
-        // TODO add your handling code here:
+        Sheet.setLastBar(0);
     }//GEN-LAST:event_PreviousButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed

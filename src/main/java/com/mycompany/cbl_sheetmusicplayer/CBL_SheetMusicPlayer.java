@@ -16,8 +16,8 @@ public class CBL_SheetMusicPlayer {
         Bar test = new Bar();
         
         try {
-            test.addNote(0, 1, Sheet.defaultPitch-7, Sheet.defaultVolume);
-            test.addNote(15, 0, Sheet.defaultPitch-4, Sheet.defaultVolume);
+            test.addNote(0, 1, Sheet.defaultPitch - 7, Sheet.defaultVolume);
+            test.addNote(15, 0, Sheet.defaultPitch - 4, Sheet.defaultVolume);
             test.addNote(0, 3, Sheet.defaultPitch, Sheet.defaultVolume);
             
             /*
@@ -27,7 +27,7 @@ public class CBL_SheetMusicPlayer {
             test.addNote(6, 1, Sheet.defaultPitch + 2, Sheet.defaultVolume);
             test.addNote(0, 3, Sheet.defaultPitch - 9, Sheet.defaultVolume);
             */
-        } catch (NoteTooLongException a) {
+        } catch(NoteTooLongException a) {
             System.out.println("Bro check yo code");
             System.out.println(a.getClass());
             System.out.println(a.getMessage());

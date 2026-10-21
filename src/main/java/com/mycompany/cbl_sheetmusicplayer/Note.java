@@ -27,7 +27,7 @@ public class Note {
      * @param pitch 
      * @param volume
      */
-    public Note (int duration, int pitch, int volume) {
+    public Note(int duration, int pitch, int volume) {
         this.duration = duration;
         this.pitch = pitch;
         this.volume = volume;

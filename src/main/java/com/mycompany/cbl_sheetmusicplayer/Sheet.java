@@ -1,8 +1,12 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit 
+this template
  */
+
 package com.mycompany.cbl_sheetmusicplayer;
+
 import javax.sound.midi.*;
 
 /**
@@ -18,9 +22,9 @@ public class Sheet {
     private static Bar[] Bars = new Bar[3];
     private static int lastBar = 0;
     
-    protected final static int beatSections = 4; // For now, any multiple of 4.
+    protected final static int beatSections = 4;    // For now, any multiple of 4.
     protected final static int defaultVolume = 100;
-    protected final static int defaultPitch = 69; // 69 = A4
+    protected final static int defaultPitch = 69;   // 69 = A4
     
     protected static Synthesizer synth;
     
@@ -50,15 +54,15 @@ public class Sheet {
         stop = a;
     }
     
-    public static void setTimeSignatureN (int numerator) {
+    public static void setTimeSignatureN(int numerator) {
         TimeSignature[0] = numerator;
     }
     
-    public static void setTimeSignatureD (int denominator) {
+    public static void setTimeSignatureD(int denominator) {
         TimeSignature[1] = denominator;
     }
     
-    public static void setTimeSignature (int numerator, int denominator) {
+    public static void setTimeSignature(int numerator, int denominator) {
         setTimeSignatureN(numerator);
         setTimeSignatureD(denominator);
     }
@@ -108,4 +112,10 @@ public class Sheet {
         
         Bars[bar].addNote(place, type, pitch, volume);
     }
+    
+    public static void setLastBar(int value) {
+        lastBar = value;
+    }
+    
+    //public static void 
 }
