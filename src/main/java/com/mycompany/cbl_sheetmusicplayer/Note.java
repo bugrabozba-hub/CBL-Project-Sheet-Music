@@ -18,7 +18,6 @@ public class Note {
     private int duration;        //
     public int pitch;          //the note character basically 
     private boolean isRest;     
-    private boolean isUpper;  //going to be used to define the line extending the note
     private int volume;       //the loudness of the note
     
     /**
@@ -95,6 +94,7 @@ public class Note {
         
         // Find in which octave (wither 5, 6 or 7 mainly)
         int octave = this.pitch / 12;
+        int ovalHeight = 10;
         
         // Hight from the note inside the octave:
         int noteH = 0;
@@ -117,9 +117,9 @@ public class Note {
         
         vertPosition = noteH + (6 - octave);
         
-        // return vertPosition * (OVAL HIGHT);
+        return vertPosition * (ovalHeight);
     }
-    
+
     
     
 }

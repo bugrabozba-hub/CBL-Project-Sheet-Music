@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Phonetic implements Runnable {
     
-    private ArrayList<Note> notes = new ArrayList<>();
+    public ArrayList<Note> notes = new ArrayList<>();
     private int beats;
     private int place;
     
@@ -162,7 +162,7 @@ public class Phonetic implements Runnable {
     
     /**
      * Method ads a note to the phonetic. If it is not possible
-     * it throws exeptions to give information to the Bar
+     * it throws exceptions to give information to the Bar
      * object.
      * @param place
      * @param type

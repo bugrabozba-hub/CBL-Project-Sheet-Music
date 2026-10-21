@@ -232,9 +232,9 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
             }
         }
         
-        for (Bar[] bar : Sheet.Bars) {
-            for (Sheet[] notes : notes) {
-                drawNote(paint, slot, hoverSlotY, pitch, type);
+        for (Bar bar : Sheet.Bars) {
+            for (Note note : Phonetic.notes) {
+                drawNote(paint, note.getSlot(), note.getY(), note.getPitch(), note.getDuration());
             }
         }
 

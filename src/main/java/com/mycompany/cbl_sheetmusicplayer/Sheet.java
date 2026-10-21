@@ -19,7 +19,7 @@ public class Sheet {
     private static int bpm = 40;
     private static int[] TimeSignature = {4, 4};
     private static boolean stop;
-    private static Bar[] Bars = new Bar[3];
+    public static Bar[] Bars = new Bar[3];
     private static int lastBar = 0;
     
     protected final static int beatSections = 4;    // For now, any multiple of 4.
