@@ -50,15 +50,15 @@ public class Sheet {
         stop = a;
     }
     
-    public static void setTimeSignatureN (int numerator) {
+    public static void setTimeSignatureN(int numerator) {
         TimeSignature[0] = numerator;
     }
     
-    public static void setTimeSignatureD (int denominator) {
+    public static void setTimeSignatureD(int denominator) {
         TimeSignature[1] = denominator;
     }
     
-    public static void setTimeSignature (int numerator, int denominator) {
+    public static void setTimeSignature(int numerator, int denominator) {
         setTimeSignatureN(numerator);
         setTimeSignatureD(denominator);
     }
@@ -99,7 +99,7 @@ public class Sheet {
         }
     }
     
-    public static void addNote (int bar, int place, int type, int pitch, int volume) 
+    public static void addNote(int bar, int place, int type, int pitch, int volume) 
             throws NoteTooLongException {
         
         if (Bars[bar] == null) {
