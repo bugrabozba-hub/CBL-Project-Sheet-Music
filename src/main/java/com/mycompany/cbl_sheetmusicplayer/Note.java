@@ -86,7 +86,7 @@ public class Note {
     }
     
     /**
-     * Method returns the vertical positon of the note for
+     * Method returns the vertical position of the note for
      * future drawing.
      * @return 
      */

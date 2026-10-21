@@ -22,6 +22,11 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     private int hoverSlotX = -1;
     private int hoverLine = 0;
     
+    public enum NoteType {
+        Semibreve, Minim, Crochet, Quaver, SemiQuaver;
+        //more redable instead of 0-4;
+    }
+    
     //drawing the sheetmusic
     private final int topStaffY = 100;
     private final int lineSpacing = 16;
@@ -136,8 +141,36 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     
         repaint();   
     }
-    void drawCrochet(Graphics2D paint) {
-        
+    void drawNote(Graphics2D paint, int slot, int y, int type, int pitch) {
+        NoteType Type = NoteType.values()[type];
+        paint.setColor(Color.BLACK);        
+        paint.setStroke(new BasicStroke(1.5f));                      
+        int centerX = 150 + (hoverSlotX * 30) + 15;
+        int sign = (pitch < 71) ? 1 : -1;
+        paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
+        if (Type != NoteType.Semibreve) {
+            paint.drawLine(centerX + (sign * 7), hoverY, centerX + (sign * 7), hoverY - (sign * 48));
+        }
+        switch (Type) {
+            case  Crochet:
+            case Semibreve: 
+                paint.setColor(Color.WHITE);
+                paint.fillOval(centerX - 4, hoverY - 3, 8, 6);    //check the visuals
+                break;
+            case Minim:                          
+                paint.setColor(Color.WHITE);
+                paint.fillOval(centerX - 4, hoverY - 3, 8, 6);
+                break;
+            case Quaver: 
+                paint.drawLine(centerX + (sign * 7), hoverY, centerX, hoverY - (sign * 7));
+                break;
+            case SemiQuaver:
+                paint.drawLine(centerX + (sign * 7), hoverY, centerX, hoverY - (sign * 7));
+                paint.drawLine(centerX + (sign * 7), hoverY - 2, centerX, hoverY - (sign * 5));
+                break;
+            default:
+                break;
+        }
     }
     
     protected void paintComponent(Graphics g) {
@@ -198,40 +231,13 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
                 paint.drawImage(timeSignatureImage, 80, (topStaffY - 12) + (144 * i), 45, 90, this);
             }
         }
-        /*
+        
         for (Bar[] bar : bars) {
             for (Sheet[] notes : notes) {
-                paint.setColor(Color.BLACK);        
-                paint.setStroke(new BasicStroke(1.5f));
-                int pitch = sheet.getPitch();                        //fix this tomorrow
-                int centerX = 150 + (hoverSlotX * 30) + 15;
-                int sign = (pitch < 71) ? 1 : -1;
-                paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
-                if (sheet.getNoteType() < 4) {
-                    paint.drawLine(centerX + (sign * 7), hoverY, centerX + (sign * 7), hoverY - (sign * 48));
-                }
-                switch (sheet.getNoteType()) {
-                    case  2:
-                        break;
-                    case 4: 
-                        paint.setColor(Color.WHITE);
-                        paint.fillOval(centerX - 4, hoverY - 3, 8, 6);    //check the visuals
-                        break;
-                    case 3:                          
-                        paint.setColor(Color.WHITE);
-                        paint.fillOval(centerX - 4, hoverY - 3, 8, 6);
-                        break;
-                    case 1: 
-                        paint.drawLine(centerX + (sign * 7), hoverY, centerX, hoverY - (sign * 7));
-                        break;
-                    case 0:
-                        paint.drawLine(centerX + (sign * 7), hoverY, centerX, hoverY - (sign * 7));
-                        paint.drawLine(centerX + (sign * 7), hoverY - 2, centerX, hoverY - (sign * 5));
-                        break;
-                }
+                drawNote(paint, slot, hoverSlotY, pitch, type);
             }
         }
-*/
+
         paint.dispose();
     }
 }
