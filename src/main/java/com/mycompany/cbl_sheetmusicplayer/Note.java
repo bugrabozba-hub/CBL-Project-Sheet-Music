@@ -84,4 +84,10 @@ public class Note {
     public int getVolume() {
         return this.volume;
     }
+    
+    /*
+    public int getY() {
+        
+    }
+    */
 }

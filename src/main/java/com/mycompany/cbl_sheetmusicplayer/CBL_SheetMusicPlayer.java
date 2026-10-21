@@ -34,7 +34,6 @@ public class CBL_SheetMusicPlayer {
             System.out.println(a.getLocalizedMessage());
         }
         Sheet.play();
-        Sheet.addBar(test);
 
         GUIJFrame appWindow = new GUIJFrame();
         

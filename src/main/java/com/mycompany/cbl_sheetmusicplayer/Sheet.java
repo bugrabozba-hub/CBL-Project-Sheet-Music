@@ -95,7 +95,7 @@ public class Sheet {
         }
     }
     
-    public static void addNote (int bar, int place, int type, int pitch, int volume) 
+    public static void addNote(int bar, int place, int type, int pitch, int volume) 
             throws NoteTooLongException, InvalidNoteTypeException {
         
         if (Bars[bar] == null) {
