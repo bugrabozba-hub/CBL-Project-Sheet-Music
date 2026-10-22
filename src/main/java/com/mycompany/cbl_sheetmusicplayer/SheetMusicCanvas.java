@@ -176,11 +176,11 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
                 paint.setColor(Color.BLACK);
                 break;
             case NoteDurationQuaver: 
-                paint.drawLine(centerX - (sign * 6), y - (sign * 48), centerX + (22 * sign), y - (sign * 35));
+                paint.drawLine(centerX + (sign * 8), y - (sign * 48), centerX + (sign * 20), y - (sign * 33));
                 break;
             case NoteDurationSemiQuaver:
-                paint.drawLine(centerX + 22, y - (sign * 35), centerX - (sign * 16) + 22, y - (sign * 48));
-                paint.drawLine(centerX + 22, y - (sign * 27), centerX - (sign * 16) + 22, y - (sign * 40));
+                paint.drawLine(centerX + (sign * 8), y - (sign * 48), centerX + (sign * 20), y - (sign * 35));
+                paint.drawLine(centerX + (sign * 8), y - (sign * 40), centerX + (sign * 20), y - (sign * 27));
                 break;
             default:       
         }
@@ -213,7 +213,7 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
             }   
         }
         
-
+        //fix this
     }
     
     protected void paintComponent(Graphics g) {
