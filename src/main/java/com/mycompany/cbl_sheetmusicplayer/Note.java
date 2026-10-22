@@ -19,6 +19,7 @@ public class Note {
     public int pitch;          //the note character basically 
     private boolean isRest;     
     private int volume;       //the loudness of the note
+    private int place;
     
     /**
      * Constructor of every note
@@ -26,28 +27,15 @@ public class Note {
      * @param pitch 
      * @param volume
      */
-    public Note(int duration, int pitch, int volume) {
+    public Note(int place, int duration, int pitch, int volume) {
         this.duration = duration;
         this.pitch = pitch;
         this.volume = volume;
+        this.place = place;
         
         if (this.volume == 0) {
             this.isRest = true;
         }
-    }
-    
-    public Note (int duration, int pitch) {
-        this(duration, pitch, 100); // Default volume is 100
-    }
-    
-    
-    /**
-     * Co
-     * @param duration
-     * @param rest 
-     */
-    public Note (int duration, boolean rest) {
-        this(duration, 69, 0); // A rest is by default A4
     }
     
     //public abstract void draw();
@@ -102,22 +90,26 @@ public class Note {
         
         switch (octavePitch) {
             case 0 -> noteH = 3; //C
-            // case 1
+            case 1 -> noteH = 3; //C#
             case 2 -> noteH = 2; //D
-            // case 3
+            case 3 -> noteH = 2; //D#
             case 4 -> noteH = 1; //E
             case 5 -> noteH = 0; //F
-            // case 6
+            case 6 -> noteH = 0; //F#
             case 7 -> noteH = -1; //G
-            // case 8
+            case 8 -> noteH = -1; //G#
             case 9 -> noteH = -2; //A
-            //case 10
+            case 10 -> noteH = -2; //A#
             case 11 -> noteH = -3; //B
         }
         
-        vertPosition = noteH + (6 - octave);
+        vertPosition = noteH + 12 * (6 - octave);
         
         return vertPosition * (ovalHeight);
+    }
+    
+    public int getPlace() {
+        return this.place;
     }
 
     

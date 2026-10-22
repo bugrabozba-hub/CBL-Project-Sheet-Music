@@ -60,31 +60,6 @@ public class Phonetic implements Runnable {
         return sum;
     }
     
-    public void addNote(int type, int pitch, int volume)
-            throws NoteTooLongException, InvalidNoteTypeException {
-        
-        if (type < 0 | type > 4) {
-            throw new InvalidNoteTypeException(
-                    "Note type should be between 0 and 4");
-        }
-        
-        int addLength = 1;
-        
-        // calculates added length through power of two.
-        for (int i = 0; i < type; i++) {
-            addLength *= 2;
-        }
-        
-        if (this.getLength() + addLength
-                > Sheet.getTimeSignature() * Sheet.beatSections) {
-            throw new NoteTooLongException("Note makes bar exceeds" 
-                    + Sheet.getTimeSignature() + " beats.");
-        }
-        
-        Note addedNote = new Note(addLength, pitch, volume);
-        
-        notes.add(addedNote);
-    }
     
     public int getNumberofnotes() {
         return notes.size();
@@ -106,13 +81,13 @@ public class Phonetic implements Runnable {
         // Number of semiq. = (portions of beat left) / (length of a semiq.)
         int semidiff = (diff % Sheet.beatSections) / (Sheet.beatSections / 4);
         for (int i = 0; i < semidiff; i++){
-            notes.add(new Note(0, Sheet.defaultPitch, 0));
+            notes.add(new Note(this.getLength() + i, 0, Sheet.defaultPitch, 0));
         }
         
         // Fill necesary Crochet rests
         diff = diff / Sheet.beatSections;
         for (int i = 0; i < diff; i++){
-            notes.add(new Note(2, Sheet.defaultPitch, 0));
+            notes.add(new Note(this.getLength() + i, 2, Sheet.defaultPitch, 0));
         }
     }
     
@@ -207,7 +182,7 @@ public class Phonetic implements Runnable {
         // Fill the phonetic up to the desired place
         this.fill(place);
         // Finnally, add the note.
-        notes.add(new Note(addLength, pitch, volume));
+        notes.add(new Note(place, addLength, pitch, volume));
     }
     
 }

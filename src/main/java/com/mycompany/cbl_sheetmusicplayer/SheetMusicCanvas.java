@@ -22,10 +22,12 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     private int hoverSlotX = -1;
     private int hoverLine = 0;
     
-    public enum NoteType {
-        Semibreve, Minim, Crochet, Quaver, SemiQuaver;
-        //more redable instead of 0-4;
-    }
+    public final int NoteTypeSemibreve = 4;
+    public final int NoteTypeMinim = 3;
+    public final int NoteTypeCrochet = 2;
+    public final int NoteTypeQuaver = 1;
+    public final int NoteTypeSemiQuaver = 0;
+    
     
     //drawing the sheetmusic
     private final int topStaffY = 100;
@@ -142,31 +144,30 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         repaint();   
     }
     void drawNote(Graphics2D paint, int slot, int y, int type, int pitch) {
-        NoteType Type = NoteType.values()[type];
         paint.setColor(Color.BLACK);        
         paint.setStroke(new BasicStroke(1.5f));                      
-        int centerX = 150 + (hoverSlotX * 30) + 15;
-        int sign = (pitch < 71) ? 1 : -1;
-        paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
-        if (Type != NoteType.Semibreve) {
-            paint.drawLine(centerX + (sign * 7), hoverY, centerX + (sign * 7), hoverY - (sign * 48));
+        int centerX = 150 + (slot * 30) + 15;
+        int sign = 1;// (pitch < 71) ? 1 : -1;
+        paint.fillOval(centerX - 7, y - 5, 14, 10);
+        if (type != NoteTypeSemibreve) {
+            paint.drawLine(centerX + (sign * 7), y, centerX + (sign * 7), y - (sign * 48));
         }
-        switch (Type) {
-            case  Crochet:
-            case Semibreve: 
+        switch (type) {
+            case NoteTypeCrochet:
+            case NoteTypeSemibreve: 
                 paint.setColor(Color.WHITE);
-                paint.fillOval(centerX - 4, hoverY - 3, 8, 6);    //check the visuals
+                paint.fillOval(centerX - 4, y - 3, 8, 6);    //check the visuals
                 break;
-            case Minim:                          
+            case NoteTypeMinim:                          
                 paint.setColor(Color.WHITE);
-                paint.fillOval(centerX - 4, hoverY - 3, 8, 6);
+                paint.fillOval(centerX - 4, y - 3, 8, 6);
                 break;
-            case Quaver: 
-                paint.drawLine(centerX + (sign * 7), hoverY, centerX, hoverY - (sign * 7));
+            case NoteTypeQuaver: 
+                paint.drawLine(centerX + (sign * 7), y, centerX, y - (sign * 7));
                 break;
-            case SemiQuaver:
-                paint.drawLine(centerX + (sign * 7), hoverY, centerX, hoverY - (sign * 7));
-                paint.drawLine(centerX + (sign * 7), hoverY - 2, centerX, hoverY - (sign * 5));
+            case NoteTypeSemiQuaver:
+                paint.drawLine(centerX + (sign * 7), y, centerX, y - (sign * 7));
+                paint.drawLine(centerX + (sign * 7), y - 2, centerX, y - (sign * 5));
                 break;
             default:
                 break;
@@ -232,9 +233,9 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
             }
         }
         
-        for (Bar bar : Sheet.Bars) {
-            for (Note note : Phonetic.notes) {
-                drawNote(paint, note.getSlot(), note.getY(), note.getPitch(), note.getDuration());
+        for (int i = 0; i < Sheet.Bars.length; i++) {
+            for (Note note : Sheet.Bars[i].getDrawNotes()) {
+                drawNote(paint, note.getPlace(), topStaffY + 144*i + note.getY(), note.getPitch(), note.getDuration());
             }
         }
 
