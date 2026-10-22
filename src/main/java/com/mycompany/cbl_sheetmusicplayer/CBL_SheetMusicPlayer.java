@@ -14,19 +14,14 @@ public class CBL_SheetMusicPlayer {
 
     public static void main(String[] args) throws MidiUnavailableException, InterruptedException, NoteTooLongException {
         Bar test = new Bar();
-        
+        Sheet.setBpm(180);
         try {
-            test.addNote(0, 1, Sheet.defaultPitch - 7, Sheet.defaultVolume);
-            test.addNote(15, 0, Sheet.defaultPitch - 4, Sheet.defaultVolume);
-            test.addNote(0, 3, Sheet.defaultPitch, Sheet.defaultVolume);
-            
-            /*
-            test.addNote(0, 1, Sheet.defaultPitch, Sheet.defaultVolume);
-            test.addNote(2, 1, Sheet.defaultPitch - 5, Sheet.defaultVolume);
-            test.addNote(4, 1, Sheet.defaultPitch - 7, Sheet.defaultVolume);
-            test.addNote(6, 1, Sheet.defaultPitch + 2, Sheet.defaultVolume);
-            test.addNote(0, 3, Sheet.defaultPitch - 9, Sheet.defaultVolume);
-            */
+            test.addNote(1, 0, Sheet.defaultPitch + 4, Sheet.defaultVolume);
+            test.addNote(2, 0, Sheet.defaultPitch + 9, Sheet.defaultVolume);
+            test.addNote(3, 0, Sheet.defaultPitch + 11, Sheet.defaultVolume);
+            test.addNote(4, 0, Sheet.defaultPitch + 16, Sheet.defaultVolume);
+            test.addNote(5, 1, Sheet.defaultPitch + 20, Sheet.defaultVolume);
+
         } catch(NoteTooLongException a) {
             System.out.println("Bro check yo code");
             System.out.println(a.getClass());
@@ -45,5 +40,6 @@ public class CBL_SheetMusicPlayer {
         
         test.play();
         
+        Sheet.setBpm(40);
     }
 }

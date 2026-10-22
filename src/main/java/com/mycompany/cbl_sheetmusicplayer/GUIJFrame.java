@@ -18,6 +18,9 @@ public class GUIJFrame extends javax.swing.JFrame {
         
     }
     
+    private java.awt.Image pauseImage;
+
+    
     private boolean isRest = false;
     private boolean isPlaying = false; 
     public int type = 1; 
@@ -29,6 +32,11 @@ public class GUIJFrame extends javax.swing.JFrame {
      * Creates new form GUIJFrame
      */
     public GUIJFrame() {
+        try {
+            pauseImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/pausex12.png")).getImage();
+        } catch (Exception e) {
+            System.out.println("Image not found!");
+        }
         initComponents();
         crochetButton.setSelected(true);
         //crochet is selected as default
@@ -301,7 +309,7 @@ public class GUIJFrame extends javax.swing.JFrame {
                 .addComponent(resetButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deleteButton)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,6 +437,8 @@ public class GUIJFrame extends javax.swing.JFrame {
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
         if (PlayButton.isSelected()) {
+            //GUIJFrame.PlayButton.setIconImage(pauseImage);
+        
             try {
                 Sheet.setStop(false);
                 //Sheet.print();
