@@ -340,6 +340,7 @@ public class GUIJFrame extends javax.swing.JFrame {
         );
 
         bpmInput.setModel(new javax.swing.SpinnerNumberModel(40, 10, 1200, 5));
+        bpmInput.addChangeListener(this::bpmInputStateChanged);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -508,6 +509,10 @@ public class GUIJFrame extends javax.swing.JFrame {
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void bpmInputStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bpmInputStateChanged
+        bpm = (int) bpmInput.getValue();
+    }//GEN-LAST:event_bpmInputStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Buttons;
