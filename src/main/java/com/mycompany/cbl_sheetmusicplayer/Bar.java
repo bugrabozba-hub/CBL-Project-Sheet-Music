@@ -142,7 +142,7 @@ public class Bar {
         int max = -1;
         int temp;
         int lastNoteDuration;
-        int samallestNote = -1;
+        int samallestNote = 32;
         
         for (Phonetic i: phonetics) {
             if (i.getNumberofnotes() == 0) {
