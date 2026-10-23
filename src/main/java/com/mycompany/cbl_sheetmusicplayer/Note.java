@@ -43,13 +43,23 @@ public class Note {
     public void play(int place) throws InterruptedException {
         MidiChannel channel = synth.getChannels()[place];
         channel.programChange(Sheet.getInstrument()); // 40 Violin
-        channel.noteOn(this.pitch, this.volume);
+        
+        /* This try block is used in case the phonetic thread,
+        that is playing this note, is interrupted. The finnally
+        makes sure the note gets turned off, otherwise it would
+        keep the note playing idefinetly (Kinda annoying).
+        */
+        try {
+            channel.noteOn(this.pitch, this.volume);
+            
+            /* Calculation of the time beeing played based
+            on the duration of this note */
+            int time = (15000 / Sheet.getBpm()) * this.duration;
 
-        int time = (15000 / Sheet.getBpm()) * this.duration;
-
-        Thread.sleep(time);
-
-        channel.noteOff(this.pitch);
+            Thread.sleep(time);
+        } finally {
+            channel.noteOff(this.pitch);
+        }
     }
     
     public int getDuration() {

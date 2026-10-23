@@ -6,10 +6,14 @@
 package com.mycompany.cbl_sheetmusicplayer;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 /**
  * This class is used when playing a specific bar.
- * @author freijosune
+ * It stores the notes themselves. When playing, since
+ * it implements runnable, it allows polyphonic 
+ * compositions.
+ * @author freijosuneBar
  */
 public class Phonetic implements Runnable {
     
@@ -30,6 +34,11 @@ public class Phonetic implements Runnable {
         this(place, Sheet.getTimeSignature());
     }
     
+    /**
+     * Actual Play method. To allow multiple phonetics
+     * being played at the same time w ehave to overwiite
+     * the run method.
+     */
     @Override
     public void run() {
         for (int i = 0; i < notes.size(); i++) {
@@ -81,13 +90,13 @@ public class Phonetic implements Runnable {
         // Number of semiq. = (portions of beat left) / (length of a semiq.)
         int semidiff = (diff % Sheet.beatSections) / (Sheet.beatSections / 4);
         for (int i = 0; i < semidiff; i++){
-            notes.add(new Note(this.getLength() + i, 0, Sheet.defaultPitch, 0));
+            notes.add(new Note(this.getLength() + i , 1, Sheet.defaultPitch, 0));
         }
         
         // Fill necesary Crochet rests
         diff = diff / Sheet.beatSections;
         for (int i = 0; i < diff; i++){
-            notes.add(new Note(this.getLength() + i, 2, Sheet.defaultPitch, 0));
+            notes.add(new Note(this.getLength() + i , 4, Sheet.defaultPitch, 0));
         }
     }
     
@@ -100,9 +109,20 @@ public class Phonetic implements Runnable {
      * that came before.
      */
     void deleteNote() {
-        do {
-            notes.removeLast();
-        } while (notes.getLast().getisRest());
+        try {
+            /* The first note should always be deleted.
+            Then, if the next note is a rest keep deleting
+            (for phonetic clean up). */
+            do {
+                notes.removeLast();
+            } while (notes.getLast().getisRest());
+            
+        } catch (NoSuchElementException a) {
+            /* If notes is empty it thows this type of
+            exception for both getLast and removeLast.
+            Since notes is empty we are done.
+            */
+        }
     }
     
     void deleteNote(int place) {
@@ -158,6 +178,8 @@ public class Phonetic implements Runnable {
             addLength *= 2;
         }
         
+        System.out.print(addLength);
+        
         if (place + addLength > this.beats * Sheet.beatSections) {
             /* Note at this place cannot fit in any posssible
             bar of this size.
@@ -183,6 +205,24 @@ public class Phonetic implements Runnable {
         this.fill(place);
         // Finnally, add the note.
         notes.add(new Note(place, addLength, pitch, volume));
+    }
+    
+    
+    public String toString() {
+        String result = "";
+        
+        for (int i = 0; i < notes.size(); i++) {
+            Note each = notes.get(i);
+            result += "Note " + i + ":" + each.getPlace() + "," 
+                        + each.getDuration();
+            if (each.getisRest()) {
+                result += "Rest";
+            }
+            result += "\n";
+            
+        }
+        
+        return result;
     }
     
 }

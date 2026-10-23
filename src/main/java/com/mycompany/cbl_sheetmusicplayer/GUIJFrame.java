@@ -23,7 +23,10 @@ public class GUIJFrame extends javax.swing.JFrame {
     
     private boolean isRest = false;
     private boolean isPlaying = false; 
-    public int type = 1; 
+    
+    private Player sheetPlayer;
+    
+    public int type = 2; 
     public int volume = 100;
     public int pitch;
     public int selectedAccidental;
@@ -437,19 +440,15 @@ public class GUIJFrame extends javax.swing.JFrame {
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
         if (PlayButton.isSelected()) {
-            //GUIJFrame.PlayButton.setIconImage(pauseImage);
-        
-            try {
-                Sheet.setStop(false);
-                //Sheet.print();
-                Sheet.play();
-            } catch (MidiUnavailableException ex) {
-                System.getLogger(GUIJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            } catch (InterruptedException ex) {
-                System.getLogger(GUIJFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
+            Sheet.setStop(false);
+            //Sheet.print();
+            sheetPlayer = new Player();
+            sheetPlayer.start();
         } else {
-            Sheet.setStop(true);
+            if (sheetPlayer != null) {
+                Sheet.setStop(true);
+                sheetPlayer.interrupt();
+            }
         }
     }//GEN-LAST:event_PlayButtonActionPerformed
 
@@ -470,8 +469,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fortissimoButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        Bar bar = new Bar();
-        bar.deleteNote();
+        Sheet.deleteNote();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed

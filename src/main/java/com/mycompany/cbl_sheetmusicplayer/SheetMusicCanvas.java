@@ -106,7 +106,12 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
            try {
                Sheet.addNote(Line, slot, type, pitch, volume);
             } catch (NoteTooLongException ex) {
-                System.getLogger(SheetMusicCanvas.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                JOptionPane.showMessageDialog(this,
+                        """
+                        This note type dosen't fit here.
+                        Try a smaller size of note or a
+                        different place
+                        """, "ERROR", JOptionPane.ERROR_MESSAGE);
             } 
             
            System.out.println("line " + Line + " slot " + slot + " pitch " + pitch);   // test line
