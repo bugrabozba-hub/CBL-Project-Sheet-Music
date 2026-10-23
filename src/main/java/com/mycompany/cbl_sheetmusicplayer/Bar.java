@@ -1,6 +1,8 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java 
+ * to edit this template
  */
 
 package com.mycompany.cbl_sheetmusicplayer;
@@ -35,6 +37,7 @@ public class Bar {
         return max;
     }
     
+    
     /**
      * Checks if the bar id filled or not
      * @return 
@@ -61,6 +64,7 @@ public class Bar {
         return true;
     }
     
+    
     /**
      * Fills the most full phonetic with rests.
      * Must note that if there are two of the same length
@@ -69,11 +73,11 @@ public class Bar {
      */
     private void fill() {
         //Checks if already is filled
-        if (this.isFilled()){
+        if (this.isFilled()) {
             return;
         }
         
-        int MaxPhonetic = 0;
+        int maxPhonetic = 0;
         int maxLength = -1;
         int tempLength;
         
@@ -85,13 +89,13 @@ public class Bar {
             // Makes it the max. if its higher than the one before. 
             if (maxLength < tempLength) {
                 maxLength = tempLength;
-                MaxPhonetic = i;
+                maxPhonetic = i;
             }
         }
         
         // Fills the max. phonetic
         try {
-            phonetics.get(MaxPhonetic).fill();
+            phonetics.get(maxPhonetic).fill();
         } catch (IndexOutOfBoundsException a) {
             Phonetic first = new Phonetic(0);
             phonetics.add(first);
@@ -114,7 +118,7 @@ public class Bar {
         for (Phonetic i: phonetics) {
             // Stop if user wants to.
             if (Thread.currentThread().isInterrupted()
-                    || Sheet.getStop()){
+                    || Sheet.getStop()) {
                 return;
             }
             
@@ -196,24 +200,24 @@ public class Bar {
         return phonetics.size();
     }
     
-    public void addNote (int place, int type, int pitch, int volume)
+    public void addNote(int place, int type, int pitch, int volume)
             throws NoteTooLongException {
         
         int i = 0;
         // Keep going until it finds a place for the note.
-        while(true) {
+        while (true) {
             try {
                 phonetics.get(i).addNote(place, type, pitch, volume);
                 break;
-            } catch(NoteTooLongException e) {
+            } catch (NoteTooLongException e) {
                 // If the note dosent fit go to the next
                 i++;
-            } catch(IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 /* If there are no more phonetics left then 
                 create a new one.
                 */
                 phonetics.add(new Phonetic(phonetics.size()));
-            } catch(InvalidNoteTypeException e) {
+            } catch (InvalidNoteTypeException e) {
                 // Note of this type can't fit in this place
                 throw new NoteTooLongException(e.getMessage());
             }
@@ -224,7 +228,7 @@ public class Bar {
         ArrayList<Note> result = new ArrayList<>();
         
         for (Phonetic phonetic: phonetics) {
-            for (Note i: phonetic.getNotes()){
+            for (Note i: phonetic.getNotes()) {
                 if (! i.getisRest()) {
                     result.add(i);
                 }

@@ -1,5 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-DEFAULT_.txt 
+ * to change this license
  */
 
 package com.mycompany.cbl_sheetmusicplayer;
@@ -12,15 +13,18 @@ import javax.sound.midi.MidiUnavailableException;
  */
 public class CBL_SheetMusicPlayer {
 
-    public static void main(String[] args) throws MidiUnavailableException, InterruptedException, NoteTooLongException {
+    public static void main(String[] args) 
+            throws MidiUnavailableException, InterruptedException, 
+            NoteTooLongException {
+        
         Bar test = new Bar();
         Sheet.setBpm(180);
         try {
-            test.addNote(1, 0, Sheet.defaultPitch + 4, Sheet.defaultVolume);
-            test.addNote(2, 0, Sheet.defaultPitch + 9, Sheet.defaultVolume);
-            test.addNote(3, 0, Sheet.defaultPitch + 11, Sheet.defaultVolume);
-            test.addNote(4, 0, Sheet.defaultPitch + 16, Sheet.defaultVolume);
-            test.addNote(5, 1, Sheet.defaultPitch + 20, Sheet.defaultVolume);
+            test.addNote(1, 0, Sheet.DEFAULT_PITCH + 4, Sheet.DEFAULT_VOLUME);
+            test.addNote(2, 0, Sheet.DEFAULT_PITCH + 9, Sheet.DEFAULT_VOLUME);
+            test.addNote(3, 0, Sheet.DEFAULT_PITCH + 11, Sheet.DEFAULT_VOLUME);
+            test.addNote(4, 0, Sheet.DEFAULT_PITCH + 16, Sheet.DEFAULT_VOLUME);
+            test.addNote(5, 1, Sheet.DEFAULT_PITCH + 20, Sheet.DEFAULT_VOLUME);
 
         } catch(NoteTooLongException a) {
             System.out.println("Bro check yo code");

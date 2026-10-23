@@ -1,6 +1,8 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit
+ * this template
  */
 
 package com.mycompany.cbl_sheetmusicplayer;
@@ -78,8 +80,8 @@ public class Phonetic implements Runnable {
         return notes;
     }
     
-    public void fill(int UptoBeat) {
-        int diff = UptoBeat - this.getLength();
+    public void fill(int uptoBeat) {
+        int diff = uptoBeat - this.getLength();
         
         // Stop if the bar dosen't need filling
         if (diff <= 0) {
@@ -88,20 +90,20 @@ public class Phonetic implements Runnable {
         
         // Fill the necessary SemiQuaver rests
         // Number of semiq. = (portions of beat left) / (length of a semiq.)
-        int semidiff = (diff % Sheet.beatSections) / (Sheet.beatSections / 4);
-        for (int i = 0; i < semidiff; i++){
-            notes.add(new Note(this.getLength() + i , 1, Sheet.defaultPitch, 0));
+        int semidiff = (diff % Sheet.BEAT_SECTIONS) / (Sheet.BEAT_SECTIONS / 4);
+        for (int i = 0; i < semidiff; i++) {
+            notes.add(new Note(this.getLength() + i, 1, Sheet.DEFAULT_PITCH, 0));
         }
         
         // Fill necesary Crochet rests
-        diff = diff / Sheet.beatSections;
-        for (int i = 0; i < diff; i++){
-            notes.add(new Note(this.getLength() + i , 4, Sheet.defaultPitch, 0));
+        diff = diff / Sheet.BEAT_SECTIONS;
+        for (int i = 0; i < diff; i++) {
+            notes.add(new Note(this.getLength() + i, 4, Sheet.DEFAULT_PITCH, 0));
         }
     }
     
     public void fill() {
-        this.fill(Sheet.getTimeSignature() * Sheet.beatSections);
+        this.fill(Sheet.getTimeSignature() * Sheet.BEAT_SECTIONS);
     }
     
     /**
@@ -128,14 +130,15 @@ public class Phonetic implements Runnable {
     void deleteNote(int place) {
         notes.remove(place);
     }
-
+    
+    
     boolean isFilled() {
-        if (this.getLength() == this.beats * Sheet.beatSections) {
+        if (this.getLength() == 16) {
             return true;
         } else {
             return false;
         }
-    }
+    } 
     
     int getLengthUpto(int index) throws NonexistantNoteException {
         
@@ -171,7 +174,7 @@ public class Phonetic implements Runnable {
         
         int addLength = 1;
         // New variable called to reduce computations.
-        int ThisLength = this.getLength();
+        int thisLength = this.getLength();
         
         // calculates added length through power of two.
         for (int i = 0; i < type; i++) {
@@ -180,7 +183,7 @@ public class Phonetic implements Runnable {
         
         System.out.print(addLength);
         
-        if (place + addLength > this.beats * Sheet.beatSections) {
+        if (place + addLength > this.beats * Sheet.BEAT_SECTIONS) {
             /* Note at this place cannot fit in any posssible
             bar of this size.
             */
@@ -188,14 +191,14 @@ public class Phonetic implements Runnable {
                     "Note makes any bar exceed" + this.beats + " beats.");
         }
         
-        if (place < ThisLength) {
+        if (place < thisLength) {
             /* notes are already being played where the user
             wants this specific note.
             */
             throw new NoteTooLongException("There already is a note here.");
         }
         
-        if (ThisLength + addLength > this.beats * Sheet.beatSections) {
+        if (thisLength + addLength > this.beats * Sheet.BEAT_SECTIONS) {
             // Note dosen't fit in this specific bar.
             throw new NoteTooLongException(
                     "Note makes bar exceeds" + this.beats + " beats.");
