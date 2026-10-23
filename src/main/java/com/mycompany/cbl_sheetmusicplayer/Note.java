@@ -1,11 +1,16 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java 
+ * to edit this template
  */
+
 package com.mycompany.cbl_sheetmusicplayer;
 
 import static com.mycompany.cbl_sheetmusicplayer.Sheet.synth;
-import javax.sound.midi.*;
+
+import javax.sound.midi.MidiChannel;
+
 
 /**
  *
@@ -50,7 +55,9 @@ public class Note {
         keep the note playing idefinetly (Kinda annoying).
         */
         try {
-            channel.noteOn(this.pitch, this.volume);
+            if (! this.getisRest()) {
+                channel.noteOn(this.pitch, this.volume);
+            }
             
             /* Calculation of the time beeing played based
             on the duration of this note */
@@ -66,7 +73,7 @@ public class Note {
         return this.duration;
     }
     
-    public void setDuration (int duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
     
@@ -111,6 +118,7 @@ public class Note {
             case 9 -> noteH = -2; //A
             case 10 -> noteH = -2; //A#
             case 11 -> noteH = -3; //B
+            default -> noteH = 0;
         }
         
         vertPosition = noteH + 7 * (6 - octave);      //each octave has 7 notes

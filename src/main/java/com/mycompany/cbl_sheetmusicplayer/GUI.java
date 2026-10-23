@@ -1,11 +1,14 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java
+ * to edit this template
  */
+
 package com.mycompany.cbl_sheetmusicplayer;
 
-import javax.swing.*;
 import java.awt.FlowLayout;
+import javax.swing.JFrame;
 
 /**
  *
@@ -14,19 +17,22 @@ import java.awt.FlowLayout;
  * @author bugra
  */
 public class GUI {
-        public static void main(String[] args) {
-            JFrame frame = new JFrame("Sheet Music Player");         //create JFrame with the title
+    public static void main(String[] args) {
+        //create JFrame with the title
+        JFrame frame = new JFrame("Sheet Music Player");
         
-            frame.setSize(730, 750);                                    //Set window size (sidth, height)
+        //Set window size (sidth, height)
+        frame.setSize(730, 750);
 
-            frame.setLocationRelativeTo(null);                          //Center the window on the screen
+        //Center the window on the screen
+        frame.setLocationRelativeTo(null);
 
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
-            frame.setLayout(new FlowLayout());//close the application when window is closed
+        //close the application when window is closed
+        frame.setLayout(new FlowLayout());
             
-            frame.setVisible(true);
-
+        frame.setVisible(true);
     }
 }
     

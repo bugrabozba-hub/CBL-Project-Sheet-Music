@@ -1,7 +1,10 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java
+ * to edit this template
  */
+
 package com.mycompany.cbl_sheetmusicplayer;
 
 /**
@@ -9,12 +12,14 @@ package com.mycompany.cbl_sheetmusicplayer;
  * @author bugra
  */
 
-import javax.swing.*;
-import java.util.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import javax.swing.JOptionPane;
 
-public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListener, MouseMotionListener {
+public class SheetMusicCanvas extends javax.swing.JPanel 
+        implements MouseListener, MouseMotionListener {
     
     //for mouse tracking
     private int hoverX = -1;
@@ -23,11 +28,11 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     private int hoverLine = 0;
     int slotWidth = 30;
     
-    public final int NoteDurationSemibreve = 16;
-    public final int NoteDurationMinim = 8;
-    public final int NoteDurationCrochet = 4;
-    public final int NoteDurationQuaver = 2;
-    public final int NoteDurationSemiQuaver = 1;
+    public static final int SEMIBREVE_DURATION = 16;
+    public static final int MINIM_DURATION = 8;
+    public static final int CROCHET_DURATION = 4;
+    public static final int QUAVER_DURATION = 2;
+    public static final int SEMIQUAVER_DURATION = 1;
     
             
     //draws "sheetLineCount" times sheets.
@@ -56,13 +61,19 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         this.sheet = sheet;
         
         setBackground(Color.WHITE);
-        setSize(new Dimension(680,640));
+        setSize(new Dimension(680, 640));
         
         try {
-            flatImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/flatx16.png")).getImage();
-            sharpImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/sharp2x16.png")).getImage();
-            trebleClefImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/treble-clefx64.png")).getImage();
-            timeSignatureImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/timeSignature-removebgx64.png")).getImage();
+            flatImage = new javax.swing.ImageIcon(getClass().getResource(
+                    "/Resources/flatx16.png")).getImage();
+            sharpImage = new javax.swing.ImageIcon(getClass().getResource(
+                    "/Resources/sharp2x16.png")).getImage();
+            trebleClefImage = new javax.swing.ImageIcon(getClass().getResource(
+                    "/Resources/treble-clefx64.png")).getImage();
+            timeSignatureImage = new javax.swing.ImageIcon(
+                    getClass().getResource(
+                            "/Resources/timeSignature-removebgx64.png"))
+                    .getImage(); 
         } catch (Exception e) {
             System.out.println("Image not found!");
         }
@@ -73,40 +84,46 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     }
     
     public void mousePressed(MouseEvent e) {
-        
-        int startX = 150;
         int slot = (e.getX() - 150) / 30;
-        int Line = (e.getY() - topStaffY + 40 ) / 144;
+        int line = (e.getY() - topStaffY + 40) / 144;
         int selectedAccidental = sheet.getSelectedAccidental();
         int type = sheet.getNoteType();
         int volume = sheet.getVolume();
+        
+        if (sheet.getisRest()) {
+            volume = 0;
+        }
         
         hoverX = e.getX();
         
         
         
-        if (hoverSlotX < 0 || Line >= sheetLineCount) {
+        if (hoverSlotX < 0 || line >= sheetLineCount) {
             return;
         }
-        // steps below the top line of this staff (0 = top line, 1 = first space, ...)
-        step = Math.round((float) (e.getY() - (topStaffY + Line * 144)) / stepDistance);
+        
+        /* steps below the top line of this staff
+        (0 = top line, 1 = first space, ...) */
+        step = Math.round((float) (e.getY() 
+                - (topStaffY + line * 144)) / stepDistance);
 
-        // count betweenLine notes: 38 = F5 (the top line), each step down is one note lower
+        /* count betweenLine notes: 38 = F5 (the 
+        top line),each step down is one note lower*/
         int betweenLineNote = 38 - step;
 
-        // turn that into a midi number: 12 * octave + position in the scale
-        int pitch = 12 * (betweenLineNote / 7 + 1) + scale[betweenLineNote % 7];
+        /* turn that into a midi number: 12 * octave 
+        + position in the scale */
+        int pitch = 12 * (betweenLineNote / 7 + 1) 
+                + scale[betweenLineNote % 7];
         pitch = pitch + selectedAccidental;    
 
         if (hoverSlotX >= 0) {
-           sheet.getNoteType();
-           sheet.getPitch();
-           sheet.getBpm();
-           
-           placed = true;
-           
-           try {
-               Sheet.addNote(Line, slot, type, pitch, volume);
+            sheet.getNoteType();
+            sheet.getPitch();
+            placed = true;
+            
+            try {
+                Sheet.addNote(line, slot, type, pitch, volume);
             } catch (NoteTooLongException ex) {
                 JOptionPane.showMessageDialog(this,
                         """
@@ -116,10 +133,10 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
                         """, "ERROR", JOptionPane.ERROR_MESSAGE);
             } 
             
-           System.out.println("line " + Line + " slot " + slot + " pitch " + pitch);   // test line
+            System.out.println("line " + line + " slot " + slot
+                    + " pitch " + pitch);   // test line
            
-
-           repaint();
+            repaint();
         }
     }
 
@@ -128,6 +145,7 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     }
 
     public void mouseEntered(MouseEvent e) {
+        
     }
 
     public void mouseExited(MouseEvent e) {
@@ -166,28 +184,33 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         int centerX = 150 + (slot * 30) + 15;
         int sign = (pitch < 71) ? 1 : -1;
         paint.fillOval(centerX - 8, y - 5, 16, 10);
-        if (duration != NoteDurationSemibreve) {
-            paint.drawLine(centerX + (sign * 7), y, centerX + (sign * 7), y - (sign * 48));
+        if (duration != SEMIBREVE_DURATION) {
+            paint.drawLine(centerX + (sign * 7), y, centerX + (sign * 7), 
+                    y - (sign * 48));
         }
         switch (duration) {
-            case NoteDurationCrochet:
+            case CROCHET_DURATION:
                 break;
-            case NoteDurationSemibreve: 
+            case SEMIBREVE_DURATION: 
                 paint.setColor(Color.WHITE);
-                paint.fillOval(centerX - 4, y - 3, 8, 6);    //check the visuals
+                paint.fillOval(centerX - 4, y - 3, 8, 6); //check the visuals
                 paint.setColor(Color.BLACK);
                 break;
-            case NoteDurationMinim:                          
+            case MINIM_DURATION:                          
                 paint.setColor(Color.WHITE);
                 paint.fillOval(centerX - 4, y - 3, 8, 6);
                 paint.setColor(Color.BLACK);
                 break;
-            case NoteDurationQuaver: 
-                paint.drawLine(centerX + (sign * 8), y - (sign * 48), centerX + (sign * 20), y - (sign * 33));
+            case QUAVER_DURATION: 
+                paint.drawLine(centerX + (sign * 8),
+                        y - (sign * 48), centerX + (sign * 20), 
+                        y - (sign * 33));
                 break;
-            case NoteDurationSemiQuaver:
-                paint.drawLine(centerX + (sign * 8), y - (sign * 48), centerX + (sign * 20), y - (sign * 35));
-                paint.drawLine(centerX + (sign * 8), y - (sign * 40), centerX + (sign * 20), y - (sign * 27));
+            case SEMIQUAVER_DURATION:
+                paint.drawLine(centerX + (sign * 8), y - (sign * 48), 
+                        centerX + (sign * 20), y - (sign * 35));
+                paint.drawLine(centerX + (sign * 8), y - (sign * 40), 
+                        centerX + (sign * 20), y - (sign * 27));
                 break;
             default:       
         }
@@ -211,12 +234,13 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
             return;
         }
         
-        for (int i = -2; i >= noteStep; i =- 2) {
+        for (int i = -2; i >= noteStep; i -= 2) {
             int lineY = i * stepDistance + staffTop;
             paint.drawLine(centerX - 10, lineY, centerX + 10, lineY);
-            }
+        }
+        
         //for the ones below: 10, 12
-        for (int i = 10; i <= noteStep; i =+ 2) {
+        for (int i = 10; i <= noteStep; i += 2) {
             int lineY = i * stepDistance + staffTop;
             paint.drawLine(centerX - 10, lineY, centerX + 10, lineY);
         }
@@ -228,7 +252,7 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         super.paintComponent(g);
         Graphics2D paint = (Graphics2D) g.create();
 
-        // 1. Draw the 5 main staff lines
+        // Draw the 5 main staff lines
         paint.setColor(Color.BLACK);
         paint.setStroke(new BasicStroke(1.5f));
 
@@ -240,14 +264,16 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
                 int currentY = topStaffY + (i * lineSpacing) + (j * 144);
                 paint.drawLine(startX, currentY, endX, currentY);
             }
-            paint.drawLine(startX, 100 + (j * 144), startX, 164 + (j * 144));   //draw the first bar line
-            //lineDrawer.drawLine((startX + endX) / 2, 100 + (j * 144), (startX + endX) / 2, 164 + (j * 144));  //maybe divide in half bar?
-            paint.drawLine(endX, 100 + (j * 144), endX, 164 + (j * 144));   //draw the last bar line
+            //draw the first bar line
+            paint.drawLine(startX, 100 + (j * 144), startX, 164 + (j * 144));   
+            //draw the last bar line
+            paint.drawLine(endX, 100 + (j * 144), endX, 164 + (j * 144));   
         }
         
         
-        // 2. Draw hover preview note if mouse is inside the panel
-        if (hoverX != -1 && hoverY != -1 && hoverSlotX >= 0 && hoverLine < sheetLineCount) {
+        // Draw hover preview note if mouse is inside the panel
+        if (hoverX != -1 && hoverY != -1 && hoverSlotX >= 0 
+                && hoverLine < sheetLineCount) {
             paint.setColor(new Color(0, 102, 204, 160));    //blue
 
             int centerX = 150 + (hoverSlotX * 30) + 15;
@@ -261,20 +287,24 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         //draw treble clefs
         if (trebleClefImage != null) {
             for (int i = 0; i < sheetLineCount; i++) {
-                paint.drawImage(trebleClefImage, 40, (topStaffY - 20) + (144 * i), 50, 100, this);
+                paint.drawImage(trebleClefImage, 40, 
+                        (topStaffY - 20) + (144 * i), 50, 100, this);
             }
         }
         
         //draw time signatures
         if (timeSignatureImage != null) {
             for (int i = 0; i < sheetLineCount; i++) {
-                paint.drawImage(timeSignatureImage, 80, (topStaffY - 12) + (144 * i), 45, 90, this);
+                paint.drawImage(timeSignatureImage, 80, 
+                        (topStaffY - 12) + (144 * i), 45, 90, this);
             }
         }
         
         for (int i = 0; i < Sheet.Bars.length; i++) {
             for (Note note : Sheet.Bars[i].getDrawNotes()) {
-                drawNote(paint, note.getPlace(), topStaffY + 144 * i + note.getY(), note.getDuration(), note.getPitch());
+                drawNote(paint, note.getPlace(), 
+                        topStaffY + 144 * i + note.getY(), 
+                        note.getDuration(), note.getPitch());
             }
         }
 

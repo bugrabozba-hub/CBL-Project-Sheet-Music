@@ -4,9 +4,8 @@ to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit
 this template
  */
-package com.mycompany.cbl_sheetmusicplayer;
 
-import javax.sound.midi.MidiUnavailableException;
+package com.mycompany.cbl_sheetmusicplayer;
 
 /**
  *
@@ -37,7 +36,8 @@ public class GUIJFrame extends javax.swing.JFrame {
      */
     public GUIJFrame() {
         try {
-            pauseImage = new javax.swing.ImageIcon(getClass().getResource("/Resources/pausex12.png")).getImage();
+            pauseImage = new javax.swing.ImageIcon(getClass().getResource(
+                    "/Resources/pausex12.png")).getImage();
         } catch (Exception e) {
             System.out.println("Image not found!");
         }
@@ -50,6 +50,10 @@ public class GUIJFrame extends javax.swing.JFrame {
         //mf is selected as default
         
         setSize(730,750);
+    }
+    
+    public boolean getisRest() {
+        return this.isRest;
     }
     
     public int getVolume() {
@@ -445,7 +449,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_crochetRestActionPerformed
 
     private void mezzoForteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoForteButtonActionPerformed
-        volume = Sheet.defaultVolume;
+        volume = Sheet.DEFAULT_VOLUME;
     }//GEN-LAST:event_mezzoForteButtonActionPerformed
 
     private void sharpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sharpButtonActionPerformed
@@ -461,7 +465,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_flatButtonActionPerformed
 
     private void pianissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianissimoButtonActionPerformed
-        volume = Sheet.defaultVolume * 3 / 5;
+        volume = Sheet.DEFAULT_VOLUME * 3 / 5;
     }//GEN-LAST:event_pianissimoButtonActionPerformed
 
     private void PlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayButtonActionPerformed
@@ -479,19 +483,19 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayButtonActionPerformed
 
     private void mezzoPianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mezzoPianoButtonActionPerformed
-        volume = Sheet.defaultVolume * 4 / 5;
+        volume = Sheet.DEFAULT_VOLUME * 4 / 5;
     }//GEN-LAST:event_mezzoPianoButtonActionPerformed
 
     private void pianoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoButtonActionPerformed
-        volume = Sheet.defaultVolume * 3 / 5;
+        volume = Sheet.DEFAULT_VOLUME * 3 / 5;
     }//GEN-LAST:event_pianoButtonActionPerformed
 
     private void forteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forteButtonActionPerformed
-        volume = Sheet.defaultVolume * 6 / 5;
+        volume = Sheet.DEFAULT_VOLUME * 6 / 5;
     }//GEN-LAST:event_forteButtonActionPerformed
 
     private void fortissimoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fortissimoButtonActionPerformed
-        volume = Sheet.defaultVolume * 7 / 5;
+        volume = Sheet.DEFAULT_VOLUME * 7 / 5;
     }//GEN-LAST:event_fortissimoButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -499,7 +503,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-        Sheet.ClearAll();
+        Sheet.clearAll();
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed

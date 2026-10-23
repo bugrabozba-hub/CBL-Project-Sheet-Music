@@ -7,7 +7,9 @@ this template
 
 package com.mycompany.cbl_sheetmusicplayer;
 
-import javax.sound.midi.*;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Synthesizer;
 
 /**
  *
@@ -22,9 +24,9 @@ public class Sheet {
     public static Bar[] Bars = new Bar[3];
     private static int lastBar = 0;
     
-    protected final static int beatSections = 4;    // For now, any multiple of 4.
-    protected final static int defaultVolume = 100;
-    protected final static int defaultPitch = 69;   // 69 = A4
+    protected static final int BEAT_SECTIONS = 4;    // For now, any multiple of 4.
+    protected static final int DEFAULT_VOLUME = 100;
+    protected static final int DEFAULT_PITCH = 69;   // 69 = A4
     
     protected static Synthesizer synth;
     
@@ -34,16 +36,16 @@ public class Sheet {
         return instrument;
     }
     
-    public static void setInstrument(int NewInstrument) {
-        instrument = NewInstrument;
+    public static void setInstrument(int newInstrument) {
+        instrument = newInstrument;
     }
     
     public static int getBpm() {
         return bpm;
     }
     
-    public static void setBpm(int NewBPM) {
-        bpm = NewBPM;
+    public static void setBpm(int newBPM) {
+        bpm = newBPM;
     }
     
     public static boolean getStop() {
@@ -97,7 +99,7 @@ public class Sheet {
         
     }
     
-    public static void ClearAll() {
+    public static void clearAll() {
         for (Bar i: Bars) {
             i.clear();
         }
@@ -124,11 +126,13 @@ public class Sheet {
     }
     
     public static void deleteNote() {
-        int i = 2;
-        while(true) {
+        int i = Bars.length - 1;
+        
+        while (true) {
             try {
-                if (! Bars[i].getPhonetics().isEmpty()){
-                    /* Delete last note if there is at least 
+                if (! Bars[i].getPhonetics().isEmpty()) {
+                    /* Delete last note if there is
+                if (!  at least 
                     one phonetic. */
                     Bars[i].deleteNote();
                     return;
@@ -137,10 +141,10 @@ public class Sheet {
                 i--;
             } catch (NullPointerException a) {
                 /* The current bar does not exist since it's null,
-                or the bar's phonetics are empty.
+                or the bar's phonetics are empty. 
                 The method tries to go to the one before. */ 
                 i--;
-            } catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 // There are no bars in the Sheet. Move on, do nothing.
                 return;
             }
