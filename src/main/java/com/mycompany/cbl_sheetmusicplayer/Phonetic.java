@@ -47,8 +47,7 @@ public class Phonetic implements Runnable {
             try {
                 notes.get(i).play(this.place);
             } catch (InterruptedException ex) {
-                System.getLogger(Phonetic.class.getName()).log(
-                        System.Logger.Level.ERROR, (String) null, ex);
+                return;
             }
             
             if (Sheet.getStop()) {

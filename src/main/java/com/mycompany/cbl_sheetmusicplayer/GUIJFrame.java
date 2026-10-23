@@ -515,7 +515,8 @@ public class GUIJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void bpmInputStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bpmInputStateChanged
-        bpm = (int) bpmInput.getValue();
+        bpm = ((Number) bpmInput.getValue()).intValue();
+        Sheet.setBpm(bpm);
     }//GEN-LAST:event_bpmInputStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

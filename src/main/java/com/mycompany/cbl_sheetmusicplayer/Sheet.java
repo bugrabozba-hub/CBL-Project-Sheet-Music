@@ -132,8 +132,7 @@ public class Sheet {
             try {
                 if (! Bars[i].getPhonetics().isEmpty()) {
                     /* Delete last note if there is
-                if (!  at least 
-                    one phonetic. */
+                    at least one phonetic. */
                     Bars[i].deleteNote();
                     return;
                 }

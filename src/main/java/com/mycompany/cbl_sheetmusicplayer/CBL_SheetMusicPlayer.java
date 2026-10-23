@@ -13,9 +13,7 @@ import javax.sound.midi.MidiUnavailableException;
  */
 public class CBL_SheetMusicPlayer {
 
-    public static void main(String[] args) 
-            throws MidiUnavailableException, InterruptedException, 
-            NoteTooLongException {
+    public static void main(String[] args) {
         
         Bar test = new Bar();
         Sheet.setBpm(180);
@@ -32,7 +30,11 @@ public class CBL_SheetMusicPlayer {
             System.out.println(a.getMessage());
             System.out.println(a.getLocalizedMessage());
         }
-        Sheet.play();
+        try {
+            Sheet.play();
+        } catch (MidiUnavailableException | InterruptedException ex) {
+            
+        }
 
         GUIJFrame appWindow = new GUIJFrame();
         
@@ -42,7 +44,11 @@ public class CBL_SheetMusicPlayer {
         appWindow.setLocationRelativeTo(null); 
         appWindow.setVisible(true);
         
-        test.play();
+        try {
+            test.play();
+        } catch (InterruptedException ex) {
+            
+        }
         
         Sheet.setBpm(40);
     }
