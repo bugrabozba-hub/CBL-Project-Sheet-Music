@@ -92,13 +92,13 @@ public class Note {
         
         // Find in which octave (wither 5, 6 or 7 mainly)
         int octave = this.pitch / 12;
-        int ovalHeight = 10;
+        int pitchInOctave = this.pitch % 12;
+        int ovalHeight = 8;
         
         // Hight from the note inside the octave:
         int noteH = 0;
-        int octavePitch = this.pitch - octave;
         
-        switch (octavePitch) {
+        switch (pitchInOctave) {
             case 0 -> noteH = 3; //C
             case 1 -> noteH = 3; //C#
             case 2 -> noteH = 2; //D
@@ -113,7 +113,7 @@ public class Note {
             case 11 -> noteH = -3; //B
         }
         
-        vertPosition = noteH + 12 * (6 - octave);
+        vertPosition = noteH + 7 * (6 - octave);      //each octave has 7 notes
         
         return vertPosition * (ovalHeight);
     }
