@@ -90,6 +90,10 @@ public class SheetMusicCanvas extends javax.swing.JPanel
         int type = sheet.getNoteType();
         int volume = sheet.getVolume();
         
+        if (sheet.getisRest()) {
+            volume = 0;
+        }
+        
         hoverX = e.getX();
         
         

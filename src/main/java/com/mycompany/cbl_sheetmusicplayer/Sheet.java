@@ -126,12 +126,13 @@ public class Sheet {
     }
     
     public static void deleteNote() {
-        int i = 2;
+        int i = Bars.length - 1;
         
         while (true) {
             try {
                 if (! Bars[i].getPhonetics().isEmpty()) {
-                    /* Delete last note if there is at least 
+                    /* Delete last note if there is
+                if (!  at least 
                     one phonetic. */
                     Bars[i].deleteNote();
                     return;

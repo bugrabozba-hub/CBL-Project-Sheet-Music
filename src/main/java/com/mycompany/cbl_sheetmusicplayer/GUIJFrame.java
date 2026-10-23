@@ -52,6 +52,10 @@ public class GUIJFrame extends javax.swing.JFrame {
         setSize(730,750);
     }
     
+    public boolean getisRest() {
+        return this.isRest;
+    }
+    
     public int getVolume() {
         return volume;
     }
