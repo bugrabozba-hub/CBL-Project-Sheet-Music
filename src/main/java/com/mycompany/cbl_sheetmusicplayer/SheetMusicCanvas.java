@@ -196,26 +196,27 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     
     void drawExtraLines(Graphics2D paint, int centerX, int staffTop, int y) {
             
+        int noteStep = Math.round((float) (y - staffTop) / stepDistance);
         //already declared sth similar in mouseMoved
         
         //for the ones above: -2, -4, -6
-        if (-7 < step && step < -1) {
-            for (int i = 0; i < 3; i ++) {
-                int lineY = i * stepDistance + staffTop;
-                paint.drawLine(centerX - 10, lineY, centerX + 10, lineY);
-            }
-        }
-        //for the ones below: 10, 12
-        if (9 < step && step < 13) {
-            for (int i = 0; i < 2; i++) {
-                int lineY = i * stepDistance + staffTop;
-                paint.drawLine(centerX - 10, lineY, centerX + 10, lineY);
-            }   
+        if (noteStep < -12 || noteStep > 20) {
+            return;
         }
         
-        //fix this
+        for (int i = -2; i >= noteStep; i =- 2) {
+            int lineY = i * stepDistance + staffTop;
+            paint.drawLine(centerX - 10, lineY, centerX + 10, lineY);
+            }
+        //for the ones below: 10, 12
+        for (int i = 10; i <= noteStep; i =+ 2) {
+            int lineY = i * stepDistance + staffTop;
+            paint.drawLine(centerX - 10, lineY, centerX + 10, lineY);
+        }
+        
+        //does not really work
     }
-    
+     
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D paint = (Graphics2D) g.create();
@@ -245,7 +246,7 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
             int centerX = 150 + (hoverSlotX * 30) + 15;
             int topLine = 144 * hoverLine + topStaffY;
             
-            drawExtraLines(paint, centerX, topLine , hoverY);
+            //drawExtraLines(paint, centerX, topLine , hoverY);
                 
             paint.fillOval(centerX - 7, hoverY - 5, 14, 10);
         }
