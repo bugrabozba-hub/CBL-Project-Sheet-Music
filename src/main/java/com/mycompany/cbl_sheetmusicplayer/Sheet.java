@@ -117,5 +117,39 @@ public class Sheet {
         lastBar = value;
     }
     
-    //public static void 
+    public static void print() {
+        for (int i = 0; i < Bars.length; i++) {
+            System.out.println("Bar " + i + ":\n" + Bars[i]);
+        }
+    }
+    
+    public static void deleteNote() {
+        int i = 2;
+        while(true) {
+            try {
+                if (! Bars[i].getPhonetics().isEmpty()){
+                    /* Delete last note if there is at least 
+                    one phonetic. */
+                    Bars[i].deleteNote();
+                    return;
+                }
+                // The bar has no phonetics, try the next one.
+                i--;
+            } catch (NullPointerException a) {
+                /* The current bar does not exist since it's null,
+                or the bar's phonetics are empty.
+                The method tries to go to the one before. */ 
+                i--;
+            } catch (IndexOutOfBoundsException e){
+                // There are no bars in the Sheet. Move on, do nothing.
+                return;
+            }
+        }
+    }
+    
+    public static void stopAll() {
+        for (Bar i: Bars) {
+            i.stop();
+        }
+    }
 }

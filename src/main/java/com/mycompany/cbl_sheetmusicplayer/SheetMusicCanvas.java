@@ -22,11 +22,11 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
     private int hoverSlotX = -1;
     private int hoverLine = 0;
     
-    public final int NoteTypeSemibreve = 4;
-    public final int NoteTypeMinim = 3;
-    public final int NoteTypeCrochet = 2;
-    public final int NoteTypeQuaver = 1;
-    public final int NoteTypeSemiQuaver = 0;
+    public static final int noteTypeSemibreve = 4;
+    public static final int noteTypeMinim = 3;
+    public static final int noteTypeCrochet = 2;
+    public static final int noteTypeQuaver = 1;
+    public static final int noteTypeSemiQuaver = 0;
     
     
     //drawing the sheetmusic
@@ -99,7 +99,12 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
            try {
                Sheet.addNote(Line, slot, type, pitch, volume);
             } catch (NoteTooLongException ex) {
-                System.getLogger(SheetMusicCanvas.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                JOptionPane.showMessageDialog(this,
+                        """
+                        This note type dosen't fit here.
+                        Try a smaller size of note or a
+                        different place
+                        """, "ERROR", JOptionPane.ERROR_MESSAGE);
             } 
             
            System.out.println("line " + Line + " slot " + slot + " pitch " + pitch);   // test line
@@ -149,23 +154,23 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         int centerX = 150 + (slot * 30) + 15;
         int sign = 1;// (pitch < 71) ? 1 : -1;
         paint.fillOval(centerX - 7, y - 5, 14, 10);
-        if (type != NoteTypeSemibreve) {
+        if (type != noteTypeSemibreve) {
             paint.drawLine(centerX + (sign * 7), y, centerX + (sign * 7), y - (sign * 48));
         }
         switch (type) {
-            case NoteTypeCrochet:
-            case NoteTypeSemibreve: 
+            case noteTypeCrochet:
+            case noteTypeSemibreve: 
                 paint.setColor(Color.WHITE);
                 paint.fillOval(centerX - 4, y - 3, 8, 6);    //check the visuals
                 break;
-            case NoteTypeMinim:                          
+            case noteTypeMinim:                          
                 paint.setColor(Color.WHITE);
                 paint.fillOval(centerX - 4, y - 3, 8, 6);
                 break;
-            case NoteTypeQuaver: 
+            case noteTypeQuaver: 
                 paint.drawLine(centerX + (sign * 7), y, centerX, y - (sign * 7));
                 break;
-            case NoteTypeSemiQuaver:
+            case noteTypeSemiQuaver:
                 paint.drawLine(centerX + (sign * 7), y, centerX, y - (sign * 7));
                 paint.drawLine(centerX + (sign * 7), y - 2, centerX, y - (sign * 5));
                 break;

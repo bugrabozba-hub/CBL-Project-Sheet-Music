@@ -14,7 +14,8 @@ import java.util.ArrayList;
 
 public class Bar {
     
-    ArrayList<Phonetic> Phonetics = new ArrayList<>();
+    ArrayList<Phonetic> phonetics = new ArrayList<>();
+    ArrayList<Thread> threads;
     
     /**
      * 
@@ -24,8 +25,8 @@ public class Bar {
         int max = 0;
         int size;
         
-        for (int i = 0; i < Phonetics.size(); i++) {
-            size = Phonetics.get(i).getLength();
+        for (int i = 0; i < phonetics.size(); i++) {
+            size = phonetics.get(i).getLength();
             if (size > max) {
                 max = size;
             }
@@ -40,7 +41,7 @@ public class Bar {
      */
     boolean isFilled() {
         
-        for (Phonetic i: Phonetics) {
+        for (Phonetic i: phonetics) {
             if (i.isFilled()) {
                 return true;
             }
@@ -51,7 +52,7 @@ public class Bar {
     
     boolean isFull() {
         
-        for (Phonetic i: Phonetics) {
+        for (Phonetic i: phonetics) {
             if (! i.isFilled()) {
                 return false;
             }
@@ -77,9 +78,9 @@ public class Bar {
         int tempLength;
         
         // For all of the phonetics
-        for (int i = 0; i < Phonetics.size(); i++) {
+        for (int i = 0; i < phonetics.size(); i++) {
             // Finds its length
-            tempLength = Phonetics.get(i).getLength();
+            tempLength = phonetics.get(i).getLength();
             
             // Makes it the max. if its higher than the one before. 
             if (maxLength < tempLength) {
@@ -90,10 +91,10 @@ public class Bar {
         
         // Fills the max. phonetic
         try {
-            Phonetics.get(MaxPhonetic).fill();
+            phonetics.get(MaxPhonetic).fill();
         } catch (IndexOutOfBoundsException a) {
             Phonetic first = new Phonetic(0);
-            Phonetics.add(first);
+            phonetics.add(first);
             first.fill();
         }
     }
@@ -107,12 +108,13 @@ public class Bar {
      */
     void play() throws InterruptedException {
         this.fill();
-        //Remember all of the Threads to be created
-        ArrayList<Thread> Threads = new ArrayList<>();
+        //Remember all of the threads to be created
+        threads = new ArrayList<>();
         
-        for (Phonetic i: Phonetics) {
+        for (Phonetic i: phonetics) {
             // Stop if user wants to.
-            if (Sheet.getStop()){
+            if (Thread.currentThread().isInterrupted()
+                    || Sheet.getStop()){
                 return;
             }
             
@@ -121,11 +123,11 @@ public class Bar {
             myThread.start();
             
             // Remember the created thread
-            Threads.add(myThread);
+            threads.add(myThread);
         }
         
         // Wait for all of the created threads to end.
-        for (Thread i: Threads) {
+        for (Thread i: threads) {
             i.join();
         }
     }
@@ -134,42 +136,50 @@ public class Bar {
      * Deletes all the notes that are closest to the end
      * of the bar and of the smallest size available. 
      */
-    void deleteNote() {
+    void deleteNote() throws NullPointerException {
         // Remembers all phonetics that should change
-        ArrayList<Phonetic> Change = new ArrayList<>();
+        ArrayList<Phonetic> change = new ArrayList<>();
         int max = -1;
         int temp;
         int lastNoteDuration;
         int samallestNote = -1;
         
-        for (Phonetic i: Phonetics) {
+        for (Phonetic i: phonetics) {
+            if (i.getNumberofnotes() == 0) {
+                continue;
+            }
             temp = i.getLength();
             
             // Searches for the phonetics of the biggest size
             if (temp > max) {
                 max = temp;
-                Change.clear();
+                change.clear();
             }
             if (temp == max) {
                 lastNoteDuration = 
                         i.getNotes().getLast().getDuration();
                 
-                /* Inside the phonetics of the biggest size,
+                /* Inside the phonetics of the bi1ggest size,
                 it selects those with the smallest note at
                 the end. 
                 */
                 if (samallestNote > lastNoteDuration) {
                     samallestNote = lastNoteDuration;
-                    Change.clear();
+                    change.clear();
                 }
                 if (samallestNote == lastNoteDuration) {
-                    Change.add(i);
+                    change.add(i);
                 }
             }
         }
         
+        // If there is nothing to change ergo 
+        if (change.isEmpty()) {
+            throw new NullPointerException();
+        }
+        
         // Once they are found, the last note is deleted.
-        for (Phonetic i: Change) {
+        for (Phonetic i: change) {
             i.deleteNote();
         }
         
@@ -179,11 +189,11 @@ public class Bar {
      * Clears all notes from the bar
      */
     void clear() {
-        Phonetics.clear();
+        phonetics.clear();
     }
     
-    public int getNumberofPhonetics() {
-        return Phonetics.size();
+    public int getNumberofphonetics() {
+        return phonetics.size();
     }
     
     public void addNote (int place, int type, int pitch, int volume)
@@ -193,7 +203,7 @@ public class Bar {
         // Keep going until it finds a place for the note.
         while(true) {
             try {
-                Phonetics.get(i).addNote(place, type, pitch, volume);
+                phonetics.get(i).addNote(place, type, pitch, volume);
                 break;
             } catch(NoteTooLongException e) {
                 // If the note dosent fit go to the next
@@ -202,7 +212,7 @@ public class Bar {
                 /* If there are no more phonetics left then 
                 create a new one.
                 */
-                Phonetics.add(new Phonetic(Phonetics.size()));
+                phonetics.add(new Phonetic(phonetics.size()));
             } catch(InvalidNoteTypeException e) {
                 // Note of this type can't fit in this place
                 throw new NoteTooLongException(e.getMessage());
@@ -213,7 +223,7 @@ public class Bar {
     public ArrayList<Note> getDrawNotes() {
         ArrayList<Note> result = new ArrayList<>();
         
-        for (Phonetic phonetic: Phonetics) {
+        for (Phonetic phonetic: phonetics) {
             for (Note i: phonetic.getNotes()){
                 if (! i.getisRest()) {
                     result.add(i);
@@ -224,5 +234,32 @@ public class Bar {
         return result;
     }
     
+    /**
+     * Testing method for debugging.
+     * @return 
+     */
+    public String toString() {
+        String result = "";
+        
+        for (int i = 0; i < phonetics.size(); i++) {
+            result += "Phonetic " + i + ": \n" + phonetics.get(i).toString();
+        }
+        
+        return result;
+    }
     
+    public ArrayList<Phonetic> getPhonetics() {
+        return phonetics;
+    }
+    
+    /**
+     * Stops all of the threads created by this Bar.
+     */
+    public void stop() {
+        if (threads != null) {
+            for (Thread i : threads) {
+                i.interrupt();
+            }
+        }
+    }
 }
