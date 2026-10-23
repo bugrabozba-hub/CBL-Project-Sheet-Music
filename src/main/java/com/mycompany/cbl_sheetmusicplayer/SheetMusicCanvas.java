@@ -101,6 +101,8 @@ public class SheetMusicCanvas extends javax.swing.JPanel implements MouseListene
         if (hoverSlotX >= 0) {
            sheet.getNoteType();
            sheet.getPitch();
+           sheet.getBpm();
+           
            placed = true;
            
            try {

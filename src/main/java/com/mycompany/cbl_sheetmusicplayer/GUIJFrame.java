@@ -28,6 +28,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     
     public int type = 2; 
     public int volume = 100;
+    public int bpm;
     public int pitch;
     public int selectedAccidental;
 
@@ -55,6 +56,10 @@ public class GUIJFrame extends javax.swing.JFrame {
         return volume;
     }
     
+    public int getBpm() {
+        return bpm;
+    }
+    
     public int getNoteType() {
         return type;
     }
@@ -79,6 +84,10 @@ public class GUIJFrame extends javax.swing.JFrame {
         noteSelectionButtons = new javax.swing.ButtonGroup();
         volumeSelectionButtons = new javax.swing.ButtonGroup();
         semiToneSelectionButtons = new javax.swing.ButtonGroup();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
         SheetMusicCanvas = new SheetMusicCanvas(this);
         Title = new javax.swing.JTextField();
         NoteSelectionPanel = new javax.swing.JPanel();
@@ -110,6 +119,15 @@ public class GUIJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         resetButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        bpmInput = new javax.swing.JSpinner();
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
 
         SheetMusicCanvas.setBackground(new java.awt.Color(255, 255, 255));
         SheetMusicCanvas.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -321,6 +339,8 @@ public class GUIJFrame extends javax.swing.JFrame {
                 .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        bpmInput.setModel(new javax.swing.SpinnerNumberModel(40, 10, 1200, 5));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -333,6 +353,8 @@ public class GUIJFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bpmInput, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(Buttons, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -355,13 +377,16 @@ public class GUIJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(volumeSelector, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(SheetMusicCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+                .addComponent(SheetMusicCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Buttons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bpmInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        bpmInput.getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
     private void quaverRestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quaverRestButtonActionPerformed
@@ -491,6 +516,7 @@ public class GUIJFrame extends javax.swing.JFrame {
     private javax.swing.JButton PreviousButton;
     private javax.swing.JPanel SheetMusicCanvas;
     private javax.swing.JTextField Title;
+    private javax.swing.JSpinner bpmInput;
     private javax.swing.JToggleButton crochetButton;
     private javax.swing.JToggleButton crochetRest;
     private javax.swing.JButton deleteButton;
@@ -498,6 +524,10 @@ public class GUIJFrame extends javax.swing.JFrame {
     private javax.swing.JToggleButton forteButton;
     private javax.swing.JToggleButton fortissimoButton;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JToggleButton mezzoForteButton;
     private javax.swing.JToggleButton mezzoPianoButton;
     private javax.swing.JToggleButton minimButton;
